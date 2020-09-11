@@ -1,3 +1,5 @@
+import pymongo
+from pymongo import MongoClient
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -6,6 +8,16 @@ import plotly.express as px
 
 import pandas as pd
 import plotly.graph_objects as go
+
+# DB 연결
+myclient = MongoClient('218.150.247.209:2017',
+                       username='unsik',
+                       password='next1004',
+                       authSource='admin',
+                       authMechanism='SCRAM-SHA-256')
+
+myDB = myclient['FriDB']
+collection = myDB['Population']
 
 
 def makeFigure():
@@ -37,8 +49,39 @@ def makeFigure():
                  y='과목',
                  height=1000,
                  range_x=[0, 16000],
-                 color='과목',
-                 animation_frame='년도', animation_group='지역'
+                 orientation='h',
+                 color='지역',
+                 animation_frame='년도'
+
                  )
+    fig.update_layout(
+        margin=dict(l=0, r=0, t=100, b=0),
+        font=dict(family='Malgun Gothic', size=13, color='rgb(67, 67, 67)'),
+        yaxis=dict(categoryorder='total ascending'),
+        updatemenus=[{'buttons': [{'args': [None, {'frame': {'duration':
+                                                             1000, 'redraw': True}, 'mode':
+                                                   'immediate', 'fromcurrent':
+                                                   True, 'transition':
+                                                   {'duration': 1000, 'easing':
+                                                       'quadratic-in-out'}}],
+                                   'label': '&#9654;',
+                                   'method': 'animate'},
+                                  {'args': [[None], {'frame':
+                                                     {'duration': 0, 'redraw':
+                                                      True}, 'mode': 'immediate',
+                                                     'fromcurrent': True,
+                                                     'transition': {'duration': 0,
+                                                                    'easing': 'linear'}}],
+                                   'label': '&#9724;',
+                                      'method': 'animate'}],
+                      'direction': 'left',
+                      'pad': {'r': 10, 't': 70},
+                      'showactive': False,
+                      'type': 'buttons',
+                      'x': 0.1,
+                      'xanchor': 'right',
+                      'y': 0,
+                      'yanchor': 'top'}]
+    )
 
     return fig
