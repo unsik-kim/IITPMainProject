@@ -6,6 +6,8 @@ import pandas as pd
 import graphpkg.testGraph as gt
 import graphpkg.citiSubject as gcs
 import graphpkg.cityDoct as cd
+import graphpkg.Docincrease as gd
+
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -22,6 +24,9 @@ fig4 = gcs.makeFigure()
 
 fig5 = cd.makeFigure()
 fig6 = cd.makeFigure2()
+
+fig7 = gd.makeFigure()
+
 app.layout = html.Div([
 
     html.H1('■ 현재 의료인력 분석'),
@@ -41,7 +46,10 @@ app.layout = html.Div([
     dcc.Graph(id='graph5', figure=fig5),
     
     html.H6('≫ 연도별 지역별 의사수 추이'),
-    dcc.Graph(id='graph6', figure=fig6)
+    dcc.Graph(id='graph6', figure=fig6),
+    
+    html.H6('≫ 연도별 의료인력 증감 추이'),
+    dcc.Graph(id='graph7', figure=fig7)
 ])
 
 
