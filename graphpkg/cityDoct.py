@@ -80,3 +80,41 @@ def makeFigure():
         height=1000)
 
     return fig
+
+def makeFigure2():
+    dataDf = pd.DataFrame(newCollection.find({},{"_id":0}))
+    spec_doct = pd.DataFrame(newCollection.find({"의료인력":"전문의"},{"_id":0}))
+    doct = pd.DataFrame(newCollection.find({"의료인력":"의사"},{"_id":0}))
+
+    dataDf = dataDf[dataDf['시도']!='계']
+    spec_doct = spec_doct[spec_doct['시도']!='계']
+    doct = doct[doct['시도']!='계']
+
+    doct_Dict = {}
+    for i in range(2008,2019):
+        data = doct[doct['년도']==i]
+        data.fillna(0)
+        data.reset_index(drop=True)
+        data.drop(['년도'], axis='columns', inplace=True)
+        data.drop(['의료인력'],axis='columns', inplace=True)
+        doct_Dict.setdefault(str(i), data)
+        doct_Dict[str(i)] = doct_Dict[str(i)].fillna(0)
+        doct_Dict[str(i)] = doct_Dict[str(i)].replace('-', 0)
+    
+    spec_doct_Dict = {}
+    for i in range(2008,2019):
+        data = spec_doct[spec_doct['년도']==i]
+        data.fillna(0)
+        data.reset_index(drop=True)
+        data.drop(['년도'], axis='columns', inplace=True)
+        data.drop(['의료인력'],axis='columns', inplace=True)
+        spec_doct_Dict.setdefault(str(i), data)
+        spec_doct_Dict[str(i)] = spec_doct_Dict[str(i)].fillna(0)
+        spec_doct_Dict[str(i)] = spec_doct_Dict[str(i)].replace('-', 0)
+    fig = px.line(spec_doct, x=spec_doct['년도'], y=spec_doct['값'], color=spec_doct['시도'],title='시도별 전문의 수 통계')
+    fig.update_layout(
+        autosize=False,
+        width=1300,
+        height=800)
+
+    return fig  

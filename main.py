@@ -21,7 +21,7 @@ fig3 = gt.makeTestFigure()
 fig4 = gcs.makeFigure()
 
 fig5 = cd.makeFigure()
-
+fig6 = cd.makeFigure2()
 app.layout = html.Div([
 
     html.H1('■ 현재 의료인력 분석'),
@@ -38,7 +38,10 @@ app.layout = html.Div([
     dcc.Graph(id='graph4', figure=fig4),
 
     html.H6('≫ 연도별 지역별 의사수'),
-    dcc.Graph(id='graph5', figure=fig5)
+    dcc.Graph(id='graph5', figure=fig5),
+    
+    html.H6('≫ 연도별 지역별 의사수 추이'),
+    dcc.Graph(id='graph6', figure=fig6)
 ])
 
 
