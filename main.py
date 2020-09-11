@@ -5,6 +5,7 @@ import plotly.express as px
 import pandas as pd
 import graphpkg.testGraph as gt
 import graphpkg.citiSubject as gcs
+import graphpkg.cityDoct as cd
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -19,6 +20,8 @@ fig3 = gt.makeTestFigure()
 
 fig4 = gcs.makeFigure()
 
+fig5 = cd.makeFigure()
+
 app.layout = html.Div([
 
     html.H1('■ 현재 의료인력 분석'),
@@ -32,7 +35,10 @@ app.layout = html.Div([
     dcc.Graph(id='graph3', figure=fig3),
 
     html.H6('≫ 연도별 지역, 과별 의사수'),
-    dcc.Graph(id='graph4', figure=fig4)
+    dcc.Graph(id='graph4', figure=fig4),
+
+    html.H6('≫ 연도별 지역별 의사수'),
+    dcc.Graph(id='graph5', figure=fig5)
 ])
 
 
