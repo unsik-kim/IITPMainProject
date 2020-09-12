@@ -58,7 +58,7 @@ def makeFigRel():
                  x='값',
                  y='과목',
                  height=1000,
-                 range_x=[0, 16000],
+                 range_x=[0, 5],
                  orientation='h',
                  color='지역',
                  animation_frame='년도'
