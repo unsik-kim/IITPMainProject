@@ -13,17 +13,17 @@ def conDB():
     myclient = connectDB.connectDB()
 
     myDB = myclient['FriDB']
-    popCol = myDB['Population2']
     csdCol = myDB['CitySubjectDoc']
+    csdRelCol = myDB['CitySubjectDocRel']
 
-    popDF = pd.DataFrame(popCol.find({}, {'_id': 0}))
+    csdRelDF = pd.DataFrame(csdRelCol.find({}, {'_id': 0}))
     csdDF = pd.DataFrame(csdCol.find({}, {'_id': 0}))
 
-    return popDF, csdDF
+    return csdRelDF, csdDF
 
 
 def makeFigAb():
-    popDF, csdDF = conDB()
+    csdRelDF, csdDF = conDB()
 
     fig = px.bar(csdDF,
                  x='값',
@@ -51,17 +51,10 @@ def makeFigAb():
 
 
 def makeFigRel():
-    popDF, csdDF = conDB()
+    csdRelDF, csdDF = conDB()
 
-    popAllDF = popDF[popDF['행정기관'] == '전국']
-    popAllDF = popDF[popDF['구분'] == '총인구수']
 
-    resultDF = popAllDF.iloc[13:, 2:4]
-    resultDF = pd.DataFrame.reset_index(resultDF).iloc[:, 1:]
-
-    resultDF = csd
-
-    fig = px.bar(csdDF,
+    fig = px.bar(csdRelDF,
                  x='값',
                  y='과목',
                  height=1000,
