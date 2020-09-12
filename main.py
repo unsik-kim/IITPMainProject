@@ -28,26 +28,17 @@ fig6 = cd.makeFigure2()
 fig7 = gd.makeFigure()
 
 app.layout = html.Div([
+    html.H1('의료인력 데이터 분석'),
 
-    html.H1('■ 현재 의료인력 분석'),
-    html.H6('≫ 연도별 전체 의사수'),
-    dcc.Graph(id='graph1', figure=fig1),
+    html.H6('≫ 연도별 지역별 의사수 추이'),
+    dcc.Graph(id='graph6', figure=fig6),
 
-    html.H6('≫ 연도별 지역 의사수'),
-    dcc.Graph(id='graph2', figure=fig2),
-
-    html.H6('≫ 연도별 과별 의사수'),
-    dcc.Graph(id='graph3', figure=fig3),
+    html.H6('≫ 연도별 지역별 의사수'),
+    dcc.Graph(id='graph5', figure=fig5),
 
     html.H6('≫ 연도별 지역, 과별 의사수'),
     dcc.Graph(id='graph4', figure=fig4),
 
-    html.H6('≫ 연도별 지역별 의사수'),
-    dcc.Graph(id='graph5', figure=fig5),
-    
-    html.H6('≫ 연도별 지역별 의사수 추이'),
-    dcc.Graph(id='graph6', figure=fig6),
-    
     html.H6('≫ 연도별 의료인력 증감 추이'),
     dcc.Graph(id='graph7', figure=fig7)
 ])
