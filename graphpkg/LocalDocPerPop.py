@@ -2,6 +2,19 @@
 def makeFigure():
     import pandas as pd
 
+    #OECD 의료인력 평균
+        
+    data_df = pd.read_excel('.\data\OECD의사수.xlsx')
+    # Variable 0:Practising physicians / 1:Professionally active physicians / 2:Physicians licensed to practice
+    # Measure 0:Number of persons (head counts) / 1: Density per 1 000 population (head counts)
+    # OECD 0: OECD Economies / 1: Non-OECD Economies
+    print(data_df)
+    meanData_df = data_df.groupby(['Variable','Measure','OECD']).mean()
+    y2 = meanData_df.iloc[3]
+    y2
+
+
+
     local_doc = pd.read_excel(".\data\local_doc_1000.xlsx")
     x_year = local_doc['year']
     y_total = local_doc['합계']
@@ -27,6 +40,13 @@ def makeFigure():
 
     # Create traces
     fig = go.Figure()
+
+    yearList = list(range(2000,2020))
+
+    fig.add_trace(go.Scatter(x=yearList, y=y2, 
+                            mode='lines+markers',
+                            name='OECD 평균')),
+
     fig.add_trace(go.Scatter(x= x_year, y=y_total,
                         mode='lines+markers',
                         name='전국'))
