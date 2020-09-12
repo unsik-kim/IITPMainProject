@@ -1,7 +1,8 @@
+import pandas as pd
+import plotly.graph_objects as go
 
 def makeFigure():
-    import pandas as pd
-
+    
     #OECD 의료인력 평균
         
     data_df = pd.read_excel('.\data\OECD의사수.xlsx')
@@ -36,7 +37,7 @@ def makeFigure():
     y_gyeongnam = local_doc['경남']
     y_jeju = local_doc['제주']
 
-    import plotly.graph_objects as go
+    
 
     # Create traces
     fig = go.Figure()
