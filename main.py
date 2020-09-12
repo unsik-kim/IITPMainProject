@@ -7,7 +7,7 @@ import graphpkg.testGraph as gt
 import graphpkg.citiSubject as gcs
 import graphpkg.cityDoct as cd
 import graphpkg.Docincrease as gd
-
+import graphpkg.LocalDocPerPop as lp
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -26,6 +26,8 @@ fig5 = cd.makeFigure()
 fig6 = cd.makeFigure2()
 
 fig7 = gd.makeFigure()
+
+fig8 = lp.makeFigure()
 
 app.layout = html.Div([
 
@@ -49,7 +51,10 @@ app.layout = html.Div([
     dcc.Graph(id='graph6', figure=fig6),
     
     html.H6('≫ 연도별 의료인력 증감 추이'),
-    dcc.Graph(id='graph7', figure=fig7)
+    dcc.Graph(id='graph7', figure=fig7),
+
+    html.H6('≫ 인구 1000명당 지역별 의료인력'),
+    dcc.Graph(id='graph8', figure=fig8)
 ])
 
 
