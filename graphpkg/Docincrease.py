@@ -69,7 +69,7 @@ def makeFigure():
     fig.add_trace(go.Bar(x= years, y=y_value,
                     base = inver_y_val,
                     marker_color='lightslategrey',    
-                    name='의료인력 감소'), secondary_y=True,)
+                    name='이탈하는 의료 인력 수'), secondary_y=True,)
 
     # Add figure title
     fig.update_layout(
