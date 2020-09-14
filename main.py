@@ -30,7 +30,7 @@ fig7 = gd.makeFigure()
 
 fig8 = gcs.makeFigRel()
 
-fig9 = gldp.makeFigure()
+#fig9 = gldp.makeFigure()
 
 app.layout = html.Div([
     html.H1('의료인력 데이터 분석'),
@@ -51,7 +51,7 @@ app.layout = html.Div([
     dcc.Graph(id='graph7', figure=fig7),
 
     html.H6('≫ 연도별 의료인력 증감 추이'),
-    dcc.Graph(id='graph9', figure=fig9)
+    #dcc.Graph(id='graph9', figure=fig9)
 ])
 
 
