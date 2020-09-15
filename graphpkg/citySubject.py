@@ -44,7 +44,7 @@ def makeFigAb():
                                                    'immediate', 'fromcurrent':
                                                    True, 'transition':
                                                    {'duration': 1000, 'easing':
-                                                       'quadratic-in-out'}}]}]}]
+                                                       'quad'}}]}]}]
     )
 
     return fig
@@ -52,7 +52,6 @@ def makeFigAb():
 
 def makeFigRel():
     csdRelDF, csdDF = conDB()
-
 
     fig = px.bar(csdRelDF,
                  x='값',
@@ -73,7 +72,7 @@ def makeFigRel():
                                                    'immediate', 'fromcurrent':
                                                    True, 'transition':
                                                    {'duration': 1000, 'easing':
-                                                       'quadratic-in-out'}}]}]}]
+                                                       'quad'}}]}]}]
     )
 
     return fig

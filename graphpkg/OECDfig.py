@@ -23,11 +23,12 @@ myclient = MongoClient('218.150.247.209:2017',
                        authMechanism='SCRAM-SHA-256')
 DB = myclient['FriDB']
 Collection = DB['OecdDoc']
-OECD = pd.DataFrame(Collection.find({},{"_id":0}))
+OECD = pd.DataFrame(Collection.find({}, {"_id": 0}))
+
 
 def makeFigure():
-    OECD_rel = OECD[OECD['구분']=="1000명당 의사수"]
-    OECD_rel.drop(['구분'],axis='columns',inplace=True)
+    OECD_rel = OECD[OECD['구분'] == "1000명당 의사수"]
+    OECD_rel.drop(['구분'], axis='columns', inplace=True)
     OECD_mean = OECD_rel.groupby(['년도']).mean()
     OECD_mean.reset_index(inplace=True)
     year = np.array(OECD_mean['년도'])
@@ -38,9 +39,8 @@ def makeFigure():
     y = y2
     line_fitter.fit(X, y)
     y_predicted = line_fitter.predict(X)
-    gradient = line_fitter.coef_ #기울기
+    gradient = line_fitter.coef_  # 기울기
     gradient = gradient[0]
-    bias = line_fitter.intercept_
     a = X.T
     a = a[0]
     a = list(a)
@@ -54,26 +54,26 @@ def makeFigure():
     for i in range(len(a)):
         yList.append((i*gradient)+2.68)
 
-    fig = px.scatter(OECD_rel, x='년도', y='값',color='국가',
-                    title='OECD 국가별 인구 1000명당 의사 수와 예측',
-                    width=2000,
-                    height=1000,
-                    labels={
-                        "년도": "",
-                        "값": "의사 수",
-                        "국가": "          국가"
-                    })
+    fig = px.scatter(OECD_rel, x='년도', y='값', color='국가',
+                     title='OECD 국가별 인구 1000명당 의사 수와 예측',
+                     width=2000,
+                     height=1000,
+                     labels={
+                         "년도": "",
+                         "값": "의사 수",
+                         "국가": "          국가"
+                     })
 
-    fig.add_trace(go.Scatter(x = a, y = y_predicted, 
-                            mode = 'lines+markers',
-                            name = 'regression'))
+    fig.add_trace(go.Scatter(x=a, y=y_predicted,
+                             mode='lines+markers',
+                             name='regression'))
     fig.update_layout(
         margin=dict(l=20, r=20, t=60, b=10),
         font_family='Malgun Gothic',
-        font_size = 15,
+        font_size=15,
         title_font_family='Malgun Gothic',
         title_font_color="red",
-        title_font_size = 25
+        title_font_size=25
     )
 
     return fig
