@@ -2,27 +2,27 @@ import pandas as pd
 import numpy as np
 
 # 1950~2067년
-dfDeathWoman = pd.read_excel('data/여성사망률추이.xlsx').set_index(['year']).iloc[:98,:100]
-dfDeathMan = pd.read_excel('data/남성사망률추이.xlsx').set_index(['year']).iloc[:98,:100]
+dfDeathWoman = pd.read_excel('iddModel/data/여성사망률추이.xlsx').set_index(['year']).iloc[:98,:100]
+dfDeathMan = pd.read_excel('iddModel/data/남성사망률추이.xlsx').set_index(['year']).iloc[:98,:100]
 npDeathWoman = np.array(dfDeathWoman)
 npDeathMan = np.array(dfDeathMan)
 
 # 1950~2047년
-dfDoctorData = pd.read_excel('data/doctorData.xlsx').set_index(['년도']).iloc[:98,:]
+dfDoctorData = pd.read_excel('iddModel/data/doctorData.xlsx').set_index(['년도']).iloc[:98,:]
 npPassDoctor = np.around(np.array(dfDoctorData[['의대졸합격/남', '의대졸합격/여', '의전졸합격/남', '의전졸합격/여', '불합합격/남', '불합합격/여']]))
 npDoctorExam = np.around(np.array(dfDoctorData[['의사고시 합격자수','의사고시 불합격자수']]))
 npPopulation = np.array(dfDoctorData['추계인구'])
 npPassDoctorRate = np.array(dfDoctorData[['의대졸비율/남', '의대졸비율/여', '의전졸비율/남', '의전졸비율/여', '불합비율/남', '불합비율/여']])
 
 # 2011~2016년
-npDoctorAgeData = np.array(pd.read_excel('data/의사연령별분포.xlsx'))
+npDoctorAgeData = np.array(pd.read_excel('iddModel/data/의사연령별분포.xlsx'))
 
 # 1951년 의사수
-dfFirstDoctor = pd.read_excel('data/firstDoctor.xlsx')
+dfFirstDoctor = pd.read_excel('iddModel/data/firstDoctor.xlsx')
 npFirstDoctor = np.array(dfFirstDoctor)[:,1:-1]
 
 # 1950~2020년 연령분포
-dfKoreaAgePopRateData = pd.read_excel('data/koreaAgePopRateData.xlsx')
+dfKoreaAgePopRateData = pd.read_excel('iddModel/data/koreaAgePopRateData.xlsx')
 npKoreaAgePopRateDataMan = np.array(dfKoreaAgePopRateData[dfKoreaAgePopRateData['sex']=='MALE'])[:,2:]
 npKoreaAgePopRateDataWoman = np.array(dfKoreaAgePopRateData[dfKoreaAgePopRateData['sex']=='FEMALE'])[:,2:]
 
