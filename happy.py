@@ -229,7 +229,7 @@ def render_page_content(pathname):
                                     html.Div('최근 의료 4대 정책 중 하나인 의학대학 정원 확대 및 공공의대 설립에 대한의사협회 등 의사들이 반발하며 의료 파업이 발생되었다. 의료파업을 주장하고 실행했던 대한의사협회의 주장도 현재 인구 감소율과 의사 증가율을 고려하면 의사 수 충분하다며 데이터를 근거로 삼고있다. 그리고 정부 또한 OECD의사 수를 비교하였을 때 국내 의사 수는 부족하다고 데이터를 근거로 주장하고 있다. 이러한 갈등의 원인은 다양한 요인(고령화, 저출산 등의)을 정밀하게 두고 분석한 내용이 아니라 자신의 필요에 맞게 해석을 한 문제에서 시작되었다. 따라서 의료파업을 근본적으로 해결하는 방법은 의료정책에 대해 체계화된 데이터를 근거로 적절한 증원을 산정하는 것이다',
                                      style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '1%','margin-top': '1%', 'fontSize': 20}),
                                 ]
-                            )                            
+                            )             
                         ],
                     ),
                     html.Div('[‘의사 생애 주기 모델’을 통한 현존 의사의 특성 파악 및 미래 의사 인력 예측]',style={'margin-top': '10%', 'text-align': 'center', 'font-family':'Malgun Gothic', 'font-weight': 'bold', 'fontSize': 34}),
