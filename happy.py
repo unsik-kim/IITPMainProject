@@ -36,14 +36,11 @@ sidebar = html.Div(
         ),
         dbc.Nav(
             [
-                dbc.NavLink("1. 전체 의사 수", href="/page-1", id="page-1-link", style={'font-weight': 'bold', 'fontSize':20}),
-                dbc.NavLink("2. 신규 의사 수", href="/page-2", id="page-2-link", style={'font-weight': 'bold', 'fontSize':20}),
-                dbc.NavLink("3. 사망 의사 수", href="/page-3", id="page-3-link", style={'font-weight': 'bold', 'fontSize':20}),
-                dbc.NavLink("4. 은퇴 의사 수", href="/page-4", id="page-4-link", style={'font-weight': 'bold', 'fontSize':20}),
-                dbc.NavLink("5. 1000명당 의사 수", href="/page-5", id="page-5-link", style={'font-weight': 'bold', 'fontSize':20}),
-                dbc.NavLink("Page 6", href="/page-6", id="page-6-link"),
-                dbc.NavLink("Page 7", href="/page-7", id="page-7-link"),
-
+                dbc.NavLink("1. 전체 의사 수", href="/page-1", id="page-1-link", style={'font-family':'Malgun Gothic', 'font-weight': 'bold', 'fontSize':20}),
+                dbc.NavLink("2. 신규 의사 수", href="/page-2", id="page-2-link", style={'font-family':'Malgun Gothic', 'font-weight': 'bold', 'fontSize':20}),
+                dbc.NavLink("3. 사망 의사 수", href="/page-3", id="page-3-link", style={'font-family':'Malgun Gothic', 'font-weight': 'bold', 'fontSize':20}),
+                dbc.NavLink("4. 은퇴 의사 수", href="/page-4", id="page-4-link", style={'font-family':'Malgun Gothic', 'font-weight': 'bold', 'fontSize':20}),
+                dbc.NavLink("5. 1000명당 의사 수", href="/page-5", id="page-5-link", style={'font-family':'Malgun Gothic', 'font-weight': 'bold', 'fontSize':20}),
             ],
             vertical=True,
             pills=True,
@@ -110,10 +107,9 @@ def changeParameter(n_clicks, input1, input2, input3, input4):
     return u'''
         의대 입학 정원수 {}명,
         의전원 입학 정원수 {}명,
-        의대졸업인원 남성비율 {}%,
-        의전원졸업인원 남성비율 {}%
+        의대 입학 남성비율 {}%,
+        의전원 입학 남성비율 {}%
     '''.format(input1, input2, input3*100, input4*100)
-
 
 
 # 전체 의사수 그래프 콜백함수
@@ -207,7 +203,6 @@ def makeTPDGraph(input):
 
     return fig
 
-
 #navbar 채우기 색
 @app.callback(
     [Output(f"page-{i}-link", "active") for i in range(1, 8)],
@@ -224,35 +219,71 @@ def toggle_active_links(pathname):
 def render_page_content(pathname):
     if pathname == "/":
         return html.Div(
-
-            children=[
-                html.Div('[의료 4대 정책과 의료 파업]'),
-                html.Img(src='222.239.90.78:52022/root/project/doctorPrj/IITPMainProject/pic.PNG'),
-                html.Div(
-                    children=[
-                        html.Div(style={'border-radius': '25px 50px', 'background': '#F2F2F2', 'padding': '3%', 'width': '22%', 'height': '20%', 'float':'left', 'margin-right':'3%'},
-                            children=[
-                                html.H2('우리나라 의사 수',style={'font-family':'Nanum Gothic', 'font-weight': 'bold'}),
-                                html.P('107928명')
-                            ]
-                        ),
-                        html.Div(style={'border-radius': '25px 50px', 'background': '#F2F2F2', 'padding': '3%', 'width': '22%', 'height': '20%', 'float':'left', 'margin-right':'3%'},
-                            children=[
-                                html.H2('우리나라 인구 1000명당 의사 수',style={'font-family':'Nanum Gothic', 'font-weight': 'bold'}),
-                                html.P('2.08명')
-                            ]
-                        ),
-                        html.Div(style={'border-radius': '25px 50px', 'background': '#F2F2F2', 'padding': '3%', 'width': '22%', 'height': '20%', 'float':'left', 'margin-right':'3%'},
-                            children=[
-                                html.H2('OECD 회원국 인구 1000명당 의사 수',style={'font-family':'Nanum Gothic', 'font-weight': 'bold'}),
-                                html.P('3.65명 19년기준')
-                            ]
-                        )
-                    ]
-                )
-                
-            ]
-        )
+                children=[
+                    html.Div('[의료 4대 정책과 의료 파업]',style={'text-align': 'center', 'font-family':'Malgun Gothic', 'font-weight': 'bold', 'fontSize': 34}),
+                    html.Div(
+                        children=[
+                            html.Img(src='https://img.khan.co.kr/news/2020/08/26/l_2020082701003030200243311.jpg', style={'margin-left': '3%','margin-right': '3%', 'margin-top': '1%','border-radius': '25px','width': '30%', 'height': '32%', 'float':'left'}),
+                            html.Div(
+                                children=[
+                                    html.Div('최근 의료 4대 정책 중 하나인 의학대학 정원 확대 및 공공의대 설립에 대한의사협회 등 의사들이 반발하며 의료 파업이 발생되었다. 의료파업을 주장하고 실행했던 대한의사협회의 주장도 현재 인구 감소율과 의사 증가율을 고려하면 의사 수 충분하다며 데이터를 근거로 삼고있다. 그리고 정부 또한 OECD의사 수를 비교하였을 때 국내 의사 수는 부족하다고 데이터를 근거로 주장하고 있다. 이러한 갈등의 원인은 다양한 요인(고령화, 저출산 등의)을 정밀하게 두고 분석한 내용이 아니라 자신의 필요에 맞게 해석을 한 문제에서 시작되었다. 따라서 의료파업을 근본적으로 해결하는 방법은 의료정책에 대해 체계화된 데이터를 근거로 적절한 증원을 산정하는 것이다',
+                                     style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '1%','margin-top': '1%', 'fontSize': 20}),
+                                ]
+                            )                            
+                        ],
+                    ),
+                    html.Div('[‘의사 생애 주기 모델’을 통한 현존 의사의 특성 파악 및 미래 의사 인력 예측]',style={'margin-top': '10%', 'text-align': 'center', 'font-family':'Malgun Gothic', 'font-weight': 'bold', 'fontSize': 34}),
+                    html.Div(
+                        children=[
+                            html.Img(src='https://github.com/unsik-kim/IITPMainProject/blob/master/pic2.PNG?raw=true', style={'margin-left': '3%','margin-right': '3%', 'margin-top': '1%','border-radius': '25px','width': '60%', 'height': '32%', 'float':'left'}),
+                            html.Div(
+                                children=[
+                                    html.Div('본 연구에서는 현재 의료인력의 성별, 연령별 특성을 파악하고, 현재 의료인력의 실태를 설명하고자 한다. 그리고 의사 수 변동을 연도별로 반영하는 ‘의사 생애주기 모델’을 사용하여 미래 의사 인력 예측을 목표로 연구를 하였다.',
+                                     style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '1%','margin-top': '1%', 'fontSize': 20}),
+                                ]
+                            )                            
+                        ],
+                    ),
+                    html.Div('[현재 의료인력 현황]',style={'margin-top': '10%', 'text-align': 'center', 'font-family':'Malgun Gothic', 'font-weight': 'bold', 'fontSize': 34}),
+                    html.Div(
+                        children=[
+                            html.Div(style={ 'text-align': 'center', 'border-radius': '15px', 'background': '#F2F2F2', 'padding': '3%', 'width': '30%', 'height': '10%', 'float':'left', 'margin-right':'3%'},
+                                children=[
+                                    html.H2('107928명',style={'font-family':'Malgun Gothic', 'font-weight': 'bold'}),
+                                    html.P('우리나라 의사 수',style={'font-family':'Malgun Gothic', 'font-weight': 'bold'})                                
+                                ]
+                            ),
+                            html.Div(style={'text-align': 'center', 'border-radius': '15px', 'background': '#F2F2F2', 'padding': '3%', 'width': '30%', 'height': '10%', 'float':'left', 'margin-right':'3%'},
+                                children=[
+                                    html.H2('2.08명',style={'font-family':'Malgun Gothic', 'font-weight': 'bold'}),
+                                    html.P('우리나라 인구 1000명당 의사 수',style={'font-family':'Malgun Gothic', 'font-weight': 'bold'})
+                                ]
+                            ),
+                            html.Div(style={'text-align': 'center', 'border-radius': '15px', 'background': '#F2F2F2', 'padding': '3%', 'width': '30%', 'height': '10%', 'float':'left', 'margin-right':'3%'},
+                                children=[
+                                    html.H2('3.65명', style={'font-family':'Malgun Gothic', 'font-weight': 'bold'}),
+                                    html.P('OECD 회원국 인구 1000명당 의사 수', style={'font-family':'Malgun Gothic', 'font-weight': 'bold'}) 
+                                ]
+                            )
+                        ]
+                    ),
+                    html.Div('Contact Us',style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-top': '20%', 'font-weight': 'bold', 'fontSize': 34}),
+                    html.Div(
+                        children=[
+                            html.Img(src='https://github.com/unsik-kim/IITPMainProject/blob/master/pic.PNG?raw=true', style={'margin-left': '5%', 'margin-top': '1%','border-radius': '25px','width': '30%', 'height': '32%', 'float':'left'}),
+                            html.Div(
+                                children=[
+                                    html.Div('세종특별자치시 세종로 2511 고려대학교 과학기술대학 1관 HRD', style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '5%','margin-top': '5%', 'font-weight': 'bold', 'fontSize': 20}),
+                                    html.Div('이대답 : 이슈에 데이터로 답하다.', style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '5%','margin-top': '1%', 'font-weight': 'bold', 'fontSize': 20}),
+                                    html.Div('이예슬', style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '5%','margin-top': '1%', 'font-weight': 'bold', 'fontSize': 20}),
+                                    html.Div('김운식', style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '5%','margin-top': '1%', 'font-weight': 'bold', 'fontSize': 20}),
+                                    html.Div('배은형', style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '5%','margin-top': '1%', 'font-weight': 'bold', 'fontSize': 20}),
+                                ]
+                            )                            
+                        ],
+                    ), 
+                ],
+            )
     elif pathname == "/page-1":
         return html.Div(
             children=[
@@ -361,7 +392,7 @@ def render_page_content(pathname):
                     step=1
                 ),
                 html.Br(), html.Br(),
-                html.Div('[연간 사망 의사수]', style={'font-weight': 'bold', 'fontSize': 25}),
+                html.Div('[연간 은퇴 의사수]', style={'font-weight': 'bold', 'fontSize': 25}),
                 dcc.Graph(id='rdy-graph')
             ])
     elif pathname == "/page-5":
@@ -394,6 +425,6 @@ def render_page_content(pathname):
 
 if __name__ == '__main__':
     app.run_server(
-        port=50001,
+        port=50006,
         host='0.0.0.0'
     )
