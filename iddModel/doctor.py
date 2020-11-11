@@ -15,9 +15,9 @@ npPopulation = np.array(dfDoctorData['추계인구'])
 npPassDoctorRate = np.array(dfDoctorData[['의대졸비율/남', '의대졸비율/여', '의전졸비율/남', '의전졸비율/여', '불합비율/남', '불합비율/여']])
 
 # 2011~2016년
-npDoctorAgeData = np.array(pd.read_excel('data/의사연령별분포.xlsx'))
+dfDoctorAgeData = pd.read_excel('data/의사연령별분포.xlsx')
+npDoctorAgeData = np.array(dfDoctorAgeData)[:,2:]
 
-# 1951년 의사수
 dfFirstDoctor = pd.read_excel('data/firstDoctor.xlsx')
 npFirstDoctor = np.array(dfFirstDoctor)[:,1:-1]
 
@@ -25,8 +25,6 @@ npFirstDoctor = np.array(dfFirstDoctor)[:,1:-1]
 dfKoreaAgePopRateData = pd.read_excel('data/koreaAgePopRateData.xlsx')
 npKoreaAgePopRateDataMan = np.array(dfKoreaAgePopRateData[dfKoreaAgePopRateData['sex']=='MALE'])[:,2:]
 npKoreaAgePopRateDataWoman = np.array(dfKoreaAgePopRateData[dfKoreaAgePopRateData['sex']=='FEMALE'])[:,2:]
-
-
 
 
 def clusterAgeModel(rate,st,end):
@@ -51,7 +49,6 @@ def makeWorkPerson(npData,tuningSet):
     valueList = np.zeros([2,100])
     c1 = tuningSet[2][0]/((tuningSet[0][0]**(100-tuningSet[1][0]))-1)
     c2 = tuningSet[2][1]/((tuningSet[0][1]**(100-tuningSet[1][1]))-1)
-
     for i in range(100):
         result1 = ((tuningSet[0][0]**(i-tuningSet[1][0]))-1)*c1
         result2 = ((tuningSet[0][1]**(i-tuningSet[1][1]))-1)*c2
@@ -59,9 +56,9 @@ def makeWorkPerson(npData,tuningSet):
         valueList[1][i] = 0 if result2<0 else 1 if result2>1 else  result2
 
     retirePerson = np.around(npData*valueList)
-    resultData = npData - retirePerson
+    result = npData - retirePerson
     
-    return [resultData, retirePerson]
+    return [result, retirePerson]
 
 def makeArrayUseModel(tuningList):
     model1 = clusterAgeModel(tuningList[0][0], tuningList[1][0], tuningList[2][0]) # 의대 남
@@ -119,19 +116,22 @@ def makeResultPersonArray(newPersonArray, tuningSet):
     resultPersonArray = np.zeros(sizeArray)
     deadPersonArray = np.zeros(sizeArray)
     retirePersonArray = np.zeros(sizeArray)
-
-    for i in range(yearSize):
+    
+    resultPersonArray[1][0] = np.around(npFirstDoctor[0].astype(np.double))
+    resultPersonArray[1][1] = np.around(npFirstDoctor[1].astype(np.double))
+    
+    
+    
+    
+    for i in range(2,yearSize):
         # 1살 올리기 / shiftData -> 2 x 100
         shiftData = shiftOld(resultPersonArray[i-1])
-
         # 사망률 적용 / aliveData -> 2 x 100
         aliveData = makeAlivePerson(shiftData, i)
         deadPersonArray[i] = aliveData[1]
-
         # 은퇴율 적용 / workData -> 2 x 100
         workData = makeWorkPerson(aliveData[0], tuningSet)
         retirePersonArray[i] = workData[1]
-
         # 최종 계산
         resultPersonArray[i] =  workData[0] + newPersonArray[i]
 
@@ -142,7 +142,6 @@ def makeResultPersonArray(newPersonArray, tuningSet):
 
 def sumPeopleUseAge(npData):
     yearSize = len(npData)
-    
     resultData = np.zeros([yearSize, 3, 12])
     
     for i in range(yearSize):
@@ -171,23 +170,13 @@ def sumPeopleUseAge(npData):
 
     return resultData
 
+
+
 def calculateCost(npData):   
-    resultData = np.zeros([6,5,5])
+    npSumData = np.concatenate((npData[0][:2],npData[1][:2],npData[2][:2],npData[3][:2],npData[4][:2],npData[5][:2]),axis=0)
+    npResultData = np.abs(npDoctorAgeData - npSumData)
+    return npResultData
 
-    for i in range(6):
-        manNumCost = npData[39-i][0][1:6] - npAgeData[5-i][8:13]
-        womanNumCost = npData[39-i][1][1:6] - npAgeData[5-i][14:19]
-        totalNumCost = npData[39-i][2][1:6] - npAgeData[5-i][2:7]
-        
-        manRateCost = npData[39-i][0][7:12] - npAgeData[5-i][26:31]
-        womanRateCost = npData[39-i][1][7:12] - npAgeData[5-i][32:37]
-        
-        npCostArray = np.array([manNumCost, womanNumCost, totalNumCost, 
-                    manRateCost, womanRateCost])
-
-        resultData[i] = npCostArray
-
-    return resultData
 
 def getCost(npData, tuningSet):
     newPerson = makeNewPerson(npData, tuningSet[0])
@@ -253,21 +242,11 @@ def makeFuturePerson(npBasicPopulation):
     return npFuturePerson
 
 
-def makeDoctorData(npData, tuningSet):
-    #의대수, 의전원수, 의대남비율, 의전원남비율 
 
-    npFuturePerson = makeFuturePerson(npData)
+def makeResultData(npBasicPopulation, tuningSet):
+    npFuturePerson = makeFuturePerson(npBasicPopulation)
     npNewPassDoctor = npPassDoctor + npFuturePerson
     newPerson = makeNewPerson(npNewPassDoctor, tuningSet[0])
     resultData = makeResultPersonArray(newPerson,tuningSet[1])
-
-    dfData = makeDataFrame(resultData)
-
-    dfResultPerson = [dfData[0],dfData[1],dfData[0]+dfData[1]] # 의사수
-    dfNewPerson = [dfData[2],dfData[3],dfData[2]+dfData[3]]    # 신규의사수
-    dfDeadPerson = [dfData[4],dfData[5],dfData[4]+dfData[5]]   # 사망자수
-    dfRetirePerson = [dfData[6],dfData[7],dfData[6]+dfData[7]] # 은퇴자수
-    dfThousandPerDoctor = makeThousandPerDoctor(dfResultPerson, npPopulation) # 1000명당 의사수
     
-    return [dfResultPerson, dfNewPerson, dfDeadPerson, dfRetirePerson, dfThousandPerDoctor]
-
+    return makeDataFrame(resultData)
