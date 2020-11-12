@@ -220,7 +220,7 @@ def render_page_content(pathname):
     if pathname == "/":
         return html.Div(
                 children=[
-                    html.Div('[의료 4대 정책과 의료 파업]',style={'text-align': 'center', 'font-family':'Malgun Gothic', 'font-weight': 'bold', 'fontSize': 34}),
+                    html.Div('[의료 4대 정책과 의료 파업]',style={'margin-bottom':'2%','text-align': 'center', 'font-family':'Malgun Gothic', 'font-weight': 'bold', 'fontSize': 34}),
                     html.Div(
                         children=[
                             html.Img(src='https://img.khan.co.kr/news/2020/08/26/l_2020082701003030200243311.jpg', style={'margin-left': '3%','margin-right': '3%', 'margin-top': '1%','border-radius': '25px','width': '30%', 'height': '32%', 'float':'left'}),
@@ -236,7 +236,7 @@ def render_page_content(pathname):
                             )             
                         ],
                     ),
-                    html.Div('[‘의사 생애 주기 모델’을 통한 현존 의사의 특성 파악 및 미래 의사 인력 예측]',style={'margin-top': '10%', 'text-align': 'center', 'font-family':'Malgun Gothic', 'font-weight': 'bold', 'fontSize': 34}),
+                    html.Div('[‘의사 생애 주기 모델’을 통한 현존 의사의 특성 파악 및 미래 의사 인력 예측]',style={'margin-top': '10%', 'margin-bottom':'2%','text-align': 'center', 'font-family':'Malgun Gothic', 'font-weight': 'bold', 'fontSize': 34}),
                     html.Div(
                         children=[
                             html.Img(src='https://github.com/unsik-kim/IITPMainProject/blob/master/pic2.PNG?raw=true', style={'margin-left': '3%','margin-right': '3%', 'margin-top': '1%','border-radius': '25px','width': '60%', 'height': '32%', 'float':'left'}),
@@ -244,11 +244,17 @@ def render_page_content(pathname):
                                 children=[
                                     html.Div('본 연구에서는 현재 의료인력의 성별, 연령별 특성을 파악하고, 현재 의료인력의 실태를 설명하고자 한다. 그리고 의사 수 변동을 연도별로 반영하는 ‘의사 생애주기 모델’을 사용하여 미래 의사 인력 예측을 목표로 연구를 하였다.',
                                      style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '1%','margin-top': '1%', 'fontSize': 20}),
+                                     html.Div('‘의사 생애 주기 모델’이란, 의사라는 직업의 시작부터 끝까지 추적하여 현존하는 의사 수를 추정하는 모델이다. 의사고시 합격부터 사망 또는 은퇴에 대한 확률모형을 통하여 매년 현직에 있는 의사 수를 추론하기 위해 사용한다.',
+                                     style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '1%','margin-top': '1%', 'fontSize': 20}),
+                                     html.Div('‘의사 생애 주기 모델’을 통해 정확한 현존 의사 인원을 파악하고, 증원해야 할 인원을 제시하고자 하였다. 각각의 단계에서 의료 인력의 변화를 보기 위해 매해 활동 의료 인력 수에 유입되고 유출되는 숫자를 가능하면 상세하게 추론했다.',
+                                     style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '1%','margin-top': '1%', 'fontSize': 20}),
+                                     html.Div('따라서, 본 연구에서는 앞에서 제시한 문제를 해결하고, 정부의 적절한 보건 의료 인력 수급 정책 마련에 도움이 되고자 ‘국내 의사 인력 추정을 위한 상세 모형 개발’을 주제로 선정하였다.',
+                                     style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '1%','margin-top': '1%', 'fontSize': 20}),
                                 ]
                             )                            
                         ],
                     ),
-                    html.Div('[현재 의료인력 현황]',style={'margin-top': '10%', 'text-align': 'center', 'font-family':'Malgun Gothic', 'font-weight': 'bold', 'fontSize': 34}),
+                    html.Div('[현재 의료인력 현황]',style={'margin-top': '10%', 'margin-bottom':'2%','text-align': 'center', 'font-family':'Malgun Gothic', 'font-weight': 'bold', 'fontSize': 34}),
                     html.Div(
                         children=[
                             html.Div(style={ 'text-align': 'center', 'border-radius': '15px', 'background': '#F2F2F2', 'padding': '3%', 'width': '30%', 'height': '10%', 'float':'left', 'margin-right':'3%'},
@@ -271,7 +277,7 @@ def render_page_content(pathname):
                             )
                         ]
                     ),
-                    html.Div('Contact Us',style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-top': '20%', 'font-weight': 'bold', 'fontSize': 34}),
+                    html.Div('Contact Us',style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-top': '20%','margin-bottom':'2%', 'font-weight': 'bold', 'fontSize': 34}),
                     html.Div(
                         children=[
                             html.Img(src='https://github.com/unsik-kim/IITPMainProject/blob/master/pic.PNG?raw=true', style={'margin-left': '5%', 'margin-top': '1%','border-radius': '25px','width': '30%', 'height': '32%', 'float':'left'}),
@@ -279,9 +285,9 @@ def render_page_content(pathname):
                                 children=[
                                     html.Div('세종특별자치시 세종로 2511 고려대학교 과학기술대학 1관 HRD', style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '5%','margin-top': '5%', 'font-weight': 'bold', 'fontSize': 20}),
                                     html.Div('이대답 : 이슈에 데이터로 답하다.', style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '5%','margin-top': '1%', 'font-weight': 'bold', 'fontSize': 20}),
-                                    html.Div('이예슬', style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '5%','margin-top': '1%', 'font-weight': 'bold', 'fontSize': 20}),
-                                    html.Div('김운식', style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '5%','margin-top': '1%', 'font-weight': 'bold', 'fontSize': 20}),
-                                    html.Div('배은형', style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '5%','margin-top': '1%', 'font-weight': 'bold', 'fontSize': 20}),
+                                    html.Div('이예슬    email : 2exseul@iddtech.com', style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '5%','margin-top': '1%', 'font-weight': 'bold', 'fontSize': 20}),
+                                    html.Div('김운식    email : fdw@iddtech.com', style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '5%','margin-top': '1%', 'font-weight': 'bold', 'fontSize': 20}),
+                                    html.Div('배은형    email : kelly2111@iddtech.com', style={'text-align': 'center', 'font-family':'Malgun Gothic','margin-left': '5%','margin-top': '1%', 'font-weight': 'bold', 'fontSize': 20}),
                                 ]
                             )                            
                         ],
@@ -429,6 +435,6 @@ def render_page_content(pathname):
 
 if __name__ == '__main__':
     app.run_server(
-        port=50006,
+        port=50001,
         host='0.0.0.0'
     )
