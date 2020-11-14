@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import math
 
 # 1950~2067년
 dfDeathWoman = pd.read_excel('iddModel/data/여성사망률추이.xlsx').set_index(['year']).iloc[:98,:100]
@@ -28,7 +29,28 @@ npKoreaAgePopRateDataMan = np.array(dfKoreaAgePopRateData[dfKoreaAgePopRateData[
 npKoreaAgePopRateDataWoman = np.array(dfKoreaAgePopRateData[dfKoreaAgePopRateData['sex']=='FEMALE'])[:,2:]
 
 
+def makeLogModel(tunSet):
+    npData = np.zeros(100)
+    start = tunSet[0]
+    end = tunSet[1]
+    b = tunSet[2]
+    c = tunSet[3]
+    d = tunSet[4]
+    h = tunSet[5]
 
+    for i in range(start,end+1):    
+        if (i-start)>0:
+            value1 = ( 1/( d * (i-start) * b * math.sqrt(2*math.pi) ) )
+            value2 = ((math.log((i-start)/c*d))**2)/(2*(b**2))
+            value3 = value1 * math.exp(-1*value2)
+            npData[i] = value3*h
+        else :
+            npData[i] = 0
+        
+        sumValue = np.sum(npData)
+        npRateData = npData / sumValue
+        
+    return npRateData
 
 def clusterAgeModel(rate,st,end):
     npData = np.zeros(100)

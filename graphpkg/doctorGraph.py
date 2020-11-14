@@ -33,8 +33,8 @@ def makeDDFigure(dfDeadDoctor,year):
 
     fig.update_layout(
        # height=500,
-        paper_bgcolor='rgb(248, 248, 255)',
-        plot_bgcolor='rgb(248, 248, 255)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
         margin=dict(l=0),
         showlegend=True,
         yaxis=dict(range=[0,30])
@@ -71,8 +71,8 @@ def makeNDFigure(dfNewDoctor,year):
 
     fig.update_layout(
        # height=500,
-        paper_bgcolor='rgb(248, 248, 255)',
-        plot_bgcolor='rgb(248, 248, 255)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
         margin=dict(l=0),
         showlegend=True,
         yaxis=dict(range=[0,2000]) 
@@ -108,8 +108,8 @@ def makeRDFigure(dfRetireDoctor,year):
 
     fig.update_layout(
        # height=500,
-        paper_bgcolor='rgb(248, 248, 255)',
-        plot_bgcolor='rgb(248, 248, 255)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
         margin=dict(l=0),
         showlegend=True,
         yaxis=dict(range=[0,150])
@@ -162,8 +162,8 @@ def makeANDFigure(dfResultPerson, year):
     fig = go.Figure(data=data, layout=layout)
     fig.update_traces(text=text, textposition='outside')
     fig.update_layout(
-        paper_bgcolor='rgb(248, 248, 255)',
-        plot_bgcolor='rgb(248, 248, 255)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
         margin=dict(l=0),
         showlegend=True,
         yaxis=dict(range=[0,3000])
@@ -224,6 +224,9 @@ def makeFigureSumDoc(dfResultPerson):
     fig.add_trace(go.Scatter(x=year, y=bothSumDoc,
                         mode='lines',
                         name='BOTH'))
+    fig.update_layout(
+        margin=dict(l=0,t=0.5,r=0),
+        showlegend=True)
     return fig
 
 # 연간 은퇴 의사수

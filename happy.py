@@ -435,6 +435,6 @@ def render_page_content(pathname):
 
 if __name__ == '__main__':
     app.run_server(
-        port=50001,
+        port=50006,
         host='0.0.0.0'
     )
