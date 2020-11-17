@@ -28,8 +28,51 @@ dfKoreaAgePopRateData = pd.read_excel('iddModel/data/koreaAgePopRateData.xlsx')
 npKoreaAgePopRateDataMan = np.array(dfKoreaAgePopRateData[dfKoreaAgePopRateData['sex']=='MALE'])[:,2:]
 npKoreaAgePopRateDataWoman = np.array(dfKoreaAgePopRateData[dfKoreaAgePopRateData['sex']=='FEMALE'])[:,2:]
 
+def makeLogModel3(tunSet):
+    npData = np.zeros(100)
+    start = tunSet[0]
+    end = tunSet[1]
+    head = tunSet[2]
+    height = tunSet[3]
 
-def makeLogModel(tunSet):
+    for i in range(start,end+1):
+        if i>head:
+            a1 = height**(1/(-1*(end-head)))
+            gx = ((a1**(2*(i-end)))/10)
+            npData[i] = gx
+        elif i<=head:
+            a2 = height**(1/(head-0))
+            fx = ((a2**(2*(i-0)))/100)
+            npData[i] = fx
+
+    sumValue = np.sum(npData)
+    npRateData = npData / sumValue
+        
+    return npRateData
+
+def makeLogModel2(tunSet):
+    npData = np.zeros(100)
+    start = tunSet[0]
+    end = tunSet[1]
+    head = tunSet[2]
+    height = tunSet[3]
+
+    for i in range(start,end+1):
+        if i>head:
+            a1 = height**(1/(-1*(end-head)))
+            gx = a1**(i-end)-1
+            npData[i] = gx
+        elif i<=head:
+            a2 = height**(1/(head-0))
+            fx = a2**(i-0)-1
+            npData[i] = fx
+
+    sumValue = np.sum(npData)
+    npRateData = npData / sumValue
+        
+    return npRateData
+
+def makeLogModel1(tunSet):
     npData = np.zeros(100)
     start = tunSet[0]
     end = tunSet[1]
@@ -62,9 +105,14 @@ def clusterAgeModel(rate,st,end):
 
 
 def makeArrayUseModel(tuningList):
-    model1 = clusterAgeModel(tuningList[0][0], tuningList[1][0], tuningList[2][0]) # 의대
-    model2 = clusterAgeModel(tuningList[0][1], tuningList[1][1], tuningList[2][1]) # 의전원
-    model3 = clusterAgeModel(tuningList[0][2], tuningList[1][2], tuningList[2][2]) # 재시험
+    # model1 = clusterAgeModel(tuningList[0][0], tuningList[1][0], tuningList[2][0]) # 의대
+    # model2 = clusterAgeModel(tuningList[0][1], tuningList[1][1], tuningList[2][1]) # 의전원
+    # model3 = clusterAgeModel(tuningList[0][2], tuningList[1][2], tuningList[2][2]) # 재시험
+
+    model1 = makeLogModel2(tuningList[0])
+    model2 = makeLogModel2(tuningList[1])
+    model3 = makeLogModel2(tuningList[2])
+
     resultData =  np.array([model1, model2, model3])
     return resultData
 

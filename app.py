@@ -14,12 +14,14 @@ import base64
 import os
 from pages import (
     main,
+    fullmain,
     page1,
     page2,
     page3,
     page4,
     page5,
-    more
+    more,
+    data
 )
 #---데이터---
 npBasicPopulation = np.zeros([22,4])
@@ -36,6 +38,9 @@ dfNewDoctor = [dfResultData[2],dfResultData[3],dfResultData[2]+dfResultData[3]] 
 dfDeadDoctor = [dfResultData[4],dfResultData[5],dfResultData[4]+dfResultData[5]]   # 사망자수
 dfRetireDoctor = [dfResultData[6],dfResultData[7],dfResultData[6]+dfResultData[7]] # 은퇴자수
 dfThousandPerDoctor = idoct.makeThousandPerDoctor(dfTotalDoctor, idoct.npPopulation) # 1000명당 의사수
+dfPopulation = pd.DataFrame(np.around(idoct.npPopulation))
+dfPopulation.index = range(1950, 2048)
+dfPopulation
 
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
@@ -55,24 +60,30 @@ app.layout = html.Div(
 # Update page
 @app.callback(Output("page-content", "children"), [Input("url", "pathname")])
 def display_page(pathname):
-    if pathname == "/dash-financial-report/price-performance":
+    if pathname == "/idd-doctor-report/page1":
         return page1.create_layout(app)
-    elif pathname == "/dash-financial-report/portfolio-management":
+    elif pathname == "/idd-doctor-report/page2":
         return page2.create_layout(app)
-    elif pathname == "/dash-financial-report/fees":
+    elif pathname == "/idd-doctor-report/page3":
         return page3.create_layout(app)
-    elif pathname == "/dash-financial-report/distributions":
+    elif pathname == "/idd-doctor-report/page4":
         return page4.create_layout(app)
-    elif pathname == "/dash-financial-report/news-and-reviews":
+    elif pathname == "/idd-doctor-report/page5":
         return page5.create_layout(app)
-    elif pathname == "/dash-financial-report/full-view":
+    elif pathname == "/idd-doctor-report/more":
+        return more.create_layout(app)
+    elif pathname == "/idd-doctor-report/data":
+        return data.create_layout(app)
+    elif pathname == "/idd-doctor-report/full-view":
         return (
-            main.create_layout(app),
+            fullmain.create_layout(app),         
             page1.create_layout(app),
             page2.create_layout(app),
             page3.create_layout(app),
             page4.create_layout(app),
             page5.create_layout(app),
+            more.create_layout(app),
+            data.create_layout(app)
         )
     else:
         return main.create_layout(app)
@@ -91,7 +102,7 @@ sliderMarks[2047]= {'label':'2047','style':{'writing-mode': 'vertical-rl'}}
                State('input-3-state', 'value'),
                State('input-4-state', 'value')])
 def changeParameter(n_clicks, input1, input2, input3, input4):
-    global tuningSetAgeRate, tuningSetRetireRate, dfResultData, dfTotalDoctor, dfNewDoctor, dfDeadDoctor, dfRetireDoctor, dfThousandPerDoctor
+    global tuningSetAgeRate, tuningSetRetireRate, dfResultData, dfTotalDoctor, dfNewDoctor, dfDeadDoctor, dfRetireDoctor, dfThousandPerDoctor, dfPopulation
     
     for i in range(22):
         npBasicPopulation[i] = np.array([input1,input2,input3,input4])
@@ -120,8 +131,8 @@ def makeTDGraph(input1, input2, input3):
               [Input('output-state', 'children')])
 def makeTDYGraph(input1):
     # use dfResultPerson
-    global dfTotalDoctor
-    fig = dg.makeFigureSumDoc(dfTotalDoctor)
+    global dfTotalDoctor, dfPopulation
+    fig = dg.makeFigureSumDoc(dfTotalDoctor,dfPopulation)
 
     return fig
 
@@ -197,6 +208,6 @@ def makeTPDGraph(input):
     return fig
 if __name__ == '__main__':
     app.run_server(
-        port=50006,
+        port=50008,
         host='0.0.0.0'
     )

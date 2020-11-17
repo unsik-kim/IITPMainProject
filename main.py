@@ -15,8 +15,14 @@ npBasicPopulation = np.zeros([22,4])
 for i in range(22):
         npBasicPopulation[i] = np.array([3000,50,0.6,0.6])
 
-tuningSetAgeRate = [[0.5, 0.5, 0.3, 0.8, 0.6, 0.6],[26,26,28,28,27,27],[40, 40, 40, 40, 40, 40]]
-tuningSetRetireRate = [[1.2, 1.2],[30, 30],[5.6, 5.6]]
+tuningSetAgeRate =  [[25,40,25,1.1],
+                    [25,40,27,1.1],
+                    [25,40,25,1.1],
+                    [25,40,25,1.1],
+                    [25,40,27,1.1],
+                    [25,40,25,1.1]]
+                      
+tuningSetRetireRate = [[1.1,35,1],[1.1,35,1]]
 
 dfResultData = idoct.makeResultData(npBasicPopulation,[tuningSetAgeRate,tuningSetRetireRate])
 
@@ -25,6 +31,10 @@ dfNewDoctor = [dfResultData[2],dfResultData[3],dfResultData[2]+dfResultData[3]] 
 dfDeadDoctor = [dfResultData[4],dfResultData[5],dfResultData[4]+dfResultData[5]]   # 사망자수
 dfRetireDoctor = [dfResultData[6],dfResultData[7],dfResultData[6]+dfResultData[7]] # 은퇴자수
 dfThousandPerDoctor = idoct.makeThousandPerDoctor(dfTotalDoctor, idoct.npPopulation) # 1000명당 의사수
+dfPopulation = pd.DataFrame(np.around(idoct.npPopulation))
+dfPopulation.index = range(1950, 2048)
+dfPopulation
+
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
@@ -119,7 +129,7 @@ app.layout = html.Div([
                State('input-3-state', 'value'),
                State('input-4-state', 'value')])
 def changeParameter(n_clicks, input1, input2, input3, input4):
-    global tuningSetAgeRate, tuningSetRetireRate, dfResultData, dfTotalDoctor, dfNewDoctor, dfDeadDoctor, dfRetireDoctor, dfThousandPerDoctor
+    global tuningSetAgeRate, tuningSetRetireRate, dfResultData, dfTotalDoctor, dfNewDoctor, dfDeadDoctor, dfRetireDoctor, dfThousandPerDoctor, dfPopulation
     
     for i in range(22):
         npBasicPopulation[i] = np.array([input1,input2,input3,input4])
@@ -131,6 +141,7 @@ def changeParameter(n_clicks, input1, input2, input3, input4):
     dfDeadDoctor = [dfResultData[4],dfResultData[5],dfResultData[4]+dfResultData[5]]   # 사망자수
     dfRetireDoctor = [dfResultData[6],dfResultData[7],dfResultData[6]+dfResultData[7]] # 은퇴자수
     dfThousandPerDoctor = idoct.makeThousandPerDoctor(dfTotalDoctor, idoct.npPopulation) # 1000명당 의사수
+
 
     return u'''
         2025년부터 의사고시 합격자 중 의대졸업인원 {}명,
@@ -155,8 +166,8 @@ def makeTDGraph(input1, input2):
               [Input('output-state', 'children')])
 def makeTDYGraph(input1):
     # use dfResultPerson
-    global dfTotalDoctor
-    fig = dg.makeFigureSumDoc(dfTotalDoctor)
+    global dfTotalDoctor, dfPopulation
+    fig = dg.makeFigureSumDoc(dfTotalDoctor, dfPopulation)
 
     return fig
 
@@ -233,6 +244,6 @@ def makeTPDGraph(input):
 
 if __name__ == '__main__':
     app.run_server(
-        port=50006,
+        port=50008,
         host='0.0.0.0'
     )

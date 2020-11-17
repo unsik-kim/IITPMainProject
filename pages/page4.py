@@ -23,16 +23,16 @@ def create_layout(app):
                 [
                     html.Div(
                         children=[
-                            html.Div('연도별, 성별 은퇴 의사수',  className="subtitle padded", style={'fontSize': 20}),
+                            html.Div('연도별, 성별 은퇴 의사수',  className="subtitle padded", style={'font-weight': 'bold','fontSize': 18}),
                             html.Br(),
-                            html.Div('<값 조절>', style={'font-weight': 'bold', 'fontSize': 20}),
+                            html.Div('<값 조절>', style={'fontSize': 13}),
                             dcc.Input(id='input-1-state', type='number', value=3000, min=0, step=100),
                             dcc.Input(id='input-2-state', type='number', value=50, min=0, step=50),
                             dcc.Input(id='input-3-state', type='number', value=0.6, step=0.1, min=0, max=1),
                             dcc.Input(id='input-4-state', type='number', value=0.6, step=0.1, min=0, max=1),
                             html.Button(id='submit-button-state', n_clicks=0, children='변경'),
                             html.Br(),
-                            html.Div(id='output-state', style={'font-weight': 'bold', 'fontSize': 20}),
+                            html.Div(id='output-state', style={'font-weight': 'bold','fontSize': 18}),
                             html.Br(),
                             html.Br(),
                              dcc.Graph(id='rd-graph'),
@@ -46,7 +46,7 @@ def create_layout(app):
                                 updatemode='drag'
                             ),
                             html.Br(), html.Br(),
-                            html.Div('연간 은퇴 의사수', className="subtitle padded", style={'fontSize': 20}),
+                            html.Div('연간 은퇴 의사수', className="subtitle padded", style={'font-weight': 'bold','fontSize': 18}),
                             dcc.Graph(id='rdy-graph')
                         ]),
                 ],

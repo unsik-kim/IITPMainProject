@@ -2,6 +2,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
+from plotly.subplots import make_subplots
 
 
 def makeDDFigure(dfDeadDoctor,year):
@@ -112,7 +113,7 @@ def makeRDFigure(dfRetireDoctor,year):
         plot_bgcolor='rgba(0,0,0,0)',
         margin=dict(l=0),
         showlegend=True,
-        yaxis=dict(range=[0,150])
+        yaxis=dict(range=[0,120])
        
     )
     return fig
@@ -182,51 +183,81 @@ def thousandDocGet(dfThousandPerDoctor):
 
 def OECDDocGet():
     OECDPer1000 = pd.read_excel('data/OECD의사수.xlsx')
-    OECDPer1000 = OECDPer1000.groupby(['구분','년도']).mean()
-    OECDPer1000 = OECDPer1000.iloc[0:60,:]
-    OECDPer1000 = OECDPer1000.reset_index()
-    return OECDPer1000
+    OECDPer1000.columns = ['Division', 'Country', 'Year', 'Value']
+    OECDPer1000Mean = OECDPer1000.groupby(['Division','Year']).mean()
+    OECDPer1000Mean = OECDPer1000Mean.iloc[0:60,:]
+    OECDPer1000Mean = OECDPer1000Mean.reset_index()
+    year=list(OECDPer1000Mean['Year'])
+    OECDValue = list(OECDPer1000Mean['Value'])
+    mask = (OECDPer1000.Year > 2019) & (OECDPer1000.Division == '1000명당 의사수')
+    OECDPer1000Regression = OECDPer1000.loc[mask, :]
+    OECDPer1000Regression = OECDPer1000Regression[['Division','Year','Value']]
+    OECDPer1000RegressionYear = list(OECDPer1000Regression['Year'])
+    OECDPer1000RegressionValue = list(OECDPer1000Regression['Value'])
+    year = year+OECDPer1000RegressionYear
+    OECDValue = OECDValue+OECDPer1000RegressionValue
+
+    return [OECDValue,year]
 
 def makeFigureDocPer1000(dfThousandPerDoctor):
     fig = go.Figure()
     docPer1000 = thousandDocGet(dfThousandPerDoctor)
     years = list(docPer1000.index)  #연도
     docPerThousend = list(docPer1000['docnum'])  # 1000명당 국내 의사 수 
-    OECDPer1000 = OECDDocGet()
-    year=list(OECDPer1000['년도'])
-    OECDValue = list(OECDPer1000['값'])
-    
+    OECDPerData = OECDDocGet()
+
     fig.add_trace(go.Scatter(x=years, y=docPerThousend,
                         mode='lines',
                         name='KOREA'))
-    fig.add_trace(go.Scatter(x=year, y=OECDValue,
+    fig.add_trace(go.Scatter(x=OECDPerData[1], y=OECDPerData[0],
                         mode='lines',
                         name='OECD'))
+    fig.update_layout(margin=dict(l=0,r=0,t=1,b=0),    
+        showlegend=True,
+        legend=dict(
+        yanchor="top",
+        y=0.99,
+        xanchor="left",
+        x=0.01
+    ))
 
     return fig
 
 # 연간 전체 의사수
-def makeFigureSumDoc(dfResultPerson):
-    fig = go.Figure()
+def makeFigureSumDoc(dfResultPerson,dfPopulation):
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
     
     year = list(range(1950, 2048))
     docData =getDataframe(dfResultPerson)
     manSumDoc = list(docData[0].sum(axis=1))
     womSumDoc = list(docData[1].sum(axis=1))
     bothSumDoc = list(docData[2].sum(axis=1))
+    popDoc = list(np.array(dfPopulation.T)[0])
     
     fig.add_trace(go.Scatter(x=year, y=manSumDoc,
                         mode='lines',
-                        name='MAN'))
+                        name='MAN'), secondary_y=False)
     fig.add_trace(go.Scatter(x=year, y=womSumDoc,
                         mode='lines',
-                        name='WOMAN'))
+                        name='WOMAN'), secondary_y=False)
     fig.add_trace(go.Scatter(x=year, y=bothSumDoc,
                         mode='lines',
-                        name='BOTH'))
-    fig.update_layout(
-        margin=dict(l=0,t=0.5,r=0),
-        showlegend=True)
+                        name='BOTH'), secondary_y=False)
+    fig.add_trace(go.Scatter(x=year, y=popDoc,
+                        mode='lines',
+                        name='인구수'), secondary_y=True)
+    fig.update_layout(margin=dict(l=0,r=0,t=1,b=0),    
+        showlegend=True,
+        legend=dict(
+        yanchor="top",
+        y=0.99,
+        xanchor="left",
+        x=0.01
+    ))
+
+    # Set y-axes titles
+    fig.update_yaxes(title_text="<b>number of doctors</b> yaxis title", secondary_y=False)
+    fig.update_yaxes(title_text="<b>population</b> yaxis title", secondary_y=True)
     return fig
 
 # 연간 은퇴 의사수
@@ -264,6 +295,14 @@ def makeFigureRetireDoc(dfRetirePerson):
     fig.add_trace(go.Scatter(x=year, y=bothSumDoc,
                         mode='lines',
                         name='BOTH'))
+    fig.update_layout(margin=dict(l=0,r=0,t=1,b=0),    
+        showlegend=True,
+        legend=dict(
+        yanchor="top",
+        y=0.99,
+        xanchor="left",
+        x=0.01
+    ))
 
     return fig
 
@@ -302,6 +341,14 @@ def makeFigureDeadDoc(dfDeadPerson):
     fig.add_trace(go.Scatter(x=year, y=bothSumDoc,
                         mode='lines',
                         name='BOTH'))
+    fig.update_layout(margin=dict(l=0,r=0,t=1,b=0),    
+        showlegend=True,
+        legend=dict(
+        yanchor="top",
+        y=0.99,
+        xanchor="left",
+        x=0.01
+    ))                    
 
     return fig
 
@@ -340,5 +387,12 @@ def makeFigureNewDoc(dfNewPerson):
     fig.add_trace(go.Scatter(x=year, y=bothSumDoc,
                         mode='lines',
                         name='BOTH'))
-
+    fig.update_layout(margin=dict(l=0,r=0,t=1,b=0),    
+        showlegend=True,
+        legend=dict(
+        yanchor="top",
+        y=0.99,
+        xanchor="left",
+        x=0.01
+    ))
     return fig

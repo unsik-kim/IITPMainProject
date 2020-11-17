@@ -22,9 +22,9 @@ def create_layout(app):
                 [
                     html.Div(
                         children=[
-                            html.Div('연도별, 성별 전체 의사수',  className="subtitle padded", style={'fontSize': 20}),
+                            html.Div('연도별, 성별 전체 의사수',  className="subtitle padded", style={'font-weight': 'bold','fontSize': 18}),
                             html.Br(),
-                            html.Div('<값 조절>', style={'font-weight': 'bold', 'fontSize': 20}),
+                            html.Div('<시나리오 조절>', style={'fontSize': 13}),
                             dcc.Input(id='input-1-state', type='number', value=3000, min=0, step=100),
                             dcc.Input(id='input-2-state', type='number', value=50, min=0, step=50),
                             dcc.Input(id='input-3-state', type='number', value=0.6, step=0.1, min=0, max=1),
@@ -33,8 +33,7 @@ def create_layout(app):
                             html.Br(),
                             html.Div(id='output-state', style={'font-weight': 'bold', 'fontSize': 20}),
                             html.Br(),
-                            html.Br(),
-                             dcc.Graph(id='td-graph'),
+                            dcc.Graph(id='td-graph'),
                             dcc.Slider(
                                 id='and-year-slider',
                                 min=1952,
@@ -44,8 +43,9 @@ def create_layout(app):
                                 step=1,
                                 updatemode='drag'
                             ),
-                            html.Br(), html.Br(),
-                            html.Div('연간 전체 의사수', className="subtitle padded", style={'fontSize': 20}),
+                            html.Br([]), html.Br([]),
+                            html.Div('연간 전체 의사수', className="subtitle padded", style={'font-weight': 'bold','fontSize': 18}),
+                            html.Br([]),html.Br([]),
                             dcc.Graph(id='tdy-graph')
                         ]),
                 ],

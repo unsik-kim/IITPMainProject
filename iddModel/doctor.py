@@ -27,6 +27,28 @@ npKoreaAgePopRateDataMan = np.array(dfKoreaAgePopRateData[dfKoreaAgePopRateData[
 npKoreaAgePopRateDataWoman = np.array(dfKoreaAgePopRateData[dfKoreaAgePopRateData['sex']=='FEMALE'])[:,2:]
 
 
+def makeLogModel(tunSet):
+    npData = np.zeros(100)
+    start = tunSet[0]
+    end = tunSet[1]
+    head = tunSet[2]
+    height = tunSet[3]
+
+    for i in range(start,end+1):
+        if i>head:
+            a1 = height**(1/(-1*(end-head)))
+            gx = a1**(i-end)-1
+            npData[i] = gx
+        elif i<=head:
+            a2 = height**(1/(head-20))
+            fx = a2**(i-20)-1
+            npData[i] = fx
+
+    sumValue = np.sum(npData)
+    npRateData = npData / sumValue
+        
+    return npRateData
+
 def clusterAgeModel(rate,st,end):
     npData = np.zeros(100)
     
@@ -45,10 +67,25 @@ def makeAlivePerson(npData,year):
     
     return [resultData, deadPerson]
 
+# def makeWorkPerson(npData,tuningSet):
+#     valueList = np.zeros([2,100])
+#     c1 = tuningSet[0][2]/((tuningSet[0][0]**(100-tuningSet[0][1]))-1)
+#     c2 = tuningSet[1][2]/((tuningSet[1][0]**(100-tuningSet[1][1]))-1)
+#     for i in range(100):
+#         result1 = ((tuningSet[0][0]**(i-tuningSet[0][1]))-1)*c1
+#         result2 = ((tuningSet[1][0]**(i-tuningSet[1][1]))-1)*c2
+#         valueList[0][i] = 0 if result1<0 else 1 if result1>1 else  result1
+#         valueList[1][i] = 0 if result2<0 else 1 if result2>1 else  result2
+
+#     retirePerson = np.around(npData*valueList)
+#     result = npData - retirePerson
+    
+#     return [result, retirePerson]
 def makeWorkPerson(npData,tuningSet):
     valueList = np.zeros([2,100])
     c1 = tuningSet[2][0]/((tuningSet[0][0]**(100-tuningSet[1][0]))-1)
     c2 = tuningSet[2][1]/((tuningSet[0][1]**(100-tuningSet[1][1]))-1)
+
     for i in range(100):
         result1 = ((tuningSet[0][0]**(i-tuningSet[1][0]))-1)*c1
         result2 = ((tuningSet[0][1]**(i-tuningSet[1][1]))-1)*c2
@@ -56,10 +93,10 @@ def makeWorkPerson(npData,tuningSet):
         valueList[1][i] = 0 if result2<0 else 1 if result2>1 else  result2
 
     retirePerson = np.around(npData*valueList)
-    result = npData - retirePerson
+    resultData = npData - retirePerson
     
-    return [result, retirePerson]
-
+    return [resultData, retirePerson]
+    
 def makeArrayUseModel(tuningList):
     model1 = clusterAgeModel(tuningList[0][0], tuningList[1][0], tuningList[2][0]) # 의대 남
     model2 = clusterAgeModel(tuningList[0][1], tuningList[1][1], tuningList[2][1]) # 의대 여
@@ -67,6 +104,12 @@ def makeArrayUseModel(tuningList):
     model4 = clusterAgeModel(tuningList[0][3], tuningList[1][3], tuningList[2][3]) # 의전원 여
     model5 = clusterAgeModel(tuningList[0][4], tuningList[1][4], tuningList[2][4]) # 재시험 남
     model6 = clusterAgeModel(tuningList[0][5], tuningList[1][5], tuningList[2][5]) # 재시험 여
+    # model1 = makeLogModel(tuningList[0])
+    # model2 = makeLogModel(tuningList[1])
+    # model3 = makeLogModel(tuningList[2])
+    # model4 = makeLogModel(tuningList[3])
+    # model5 = makeLogModel(tuningList[4])
+    # model6 = makeLogModel(tuningList[5])
     
     resultData =  np.array([model1, model2, model3, model4, model5, model6])
     

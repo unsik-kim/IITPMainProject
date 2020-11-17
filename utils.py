@@ -16,21 +16,21 @@ def get_header(app):
                             src="https://github.com/unsik-kim/IITPMainProject/blob/master/%EB%A1%9C%EA%B3%A0%20%ED%9A%8C%EC%8B%9D%20%EB%B0%94%ED%83%95.png?raw=true",
                             style={"width": "110px", "height": "70px","margin-top": "10px", "margin-left": "10px", "margin-right": "10px", "margin-bottom": "10px"}
                         )
-                    ],href="/dash-financial-report/main"),
+                    ],href="/idd-doctor-report/main"),
                 ],
                 className="row",
             ),
             html.Div(
                 [
                     html.Div(
-                        [html.H5("의료인력 동태 분석 및 예측")],
+                        [html.H5("의료인력 동태 분석 및 예측", style={'font-weight': 'bold'})],
                         className="seven columns main-title"
                     ),
                     html.Div(
                         [
                             dcc.Link(
                                 "Full View",
-                                href="/dash-financial-report/full-view",
+                                href="/idd-doctor-report/full-view",
                                 className="full-view-link",
                             )
                         ],
@@ -51,40 +51,54 @@ def get_menu():
         [
             dcc.Link(
                 "Main",
-                href="/dash-financial-report/main",
+                href="/idd-doctor-report/main",
                 className="tab first",
             ),
             dcc.Link(
                 "1. 전체 의사 수",
-                href="/dash-financial-report/price-performance",
+                href="/idd-doctor-report/page1",
                 className="tab",
             ),
             dcc.Link(
                 "2. 신규 의사 수",
-                href="/dash-financial-report/portfolio-management",
+                href="/idd-doctor-report/page2",
                 className="tab",
             ),
             dcc.Link(
-                "3. 사망 의사 수", href="/dash-financial-report/fees", className="tab"
+                "3. 사망 의사 수", href="/idd-doctor-report/page3", className="tab"
             ),
             dcc.Link(
                 "4. 은퇴 의사 수",
-                href="/dash-financial-report/distributions",
+                href="/idd-doctor-report/page4",
                 className="tab",
             ),
             dcc.Link(
                 "5. 1000명당 의사 수",
-                href="/dash-financial-report/news-and-reviews",
+                href="/idd-doctor-report/page5",
                 className="tab",
             ),
             dcc.Link(
                 "More",
-                href="/dash-financial-report/more",
+                href="/idd-doctor-report/more",
                 className="tab",
-            ),            
+            ), 
+            dcc.Link(
+                "Data",
+                href="/idd-doctor-report/data",
+                className="tab",
+            ),           
         ],
         className="row all-tabs",
     )
     return menu
 
+def make_dash_table(df):
+    """ Return a dash definition of an HTML table for a Pandas dataframe """
+    table = []
+    for index, row in df.iterrows():
+        html_row = []
+        for i in range(len(row)):
+            html_row.append(html.Td([row[i]]))
+        table.append(html.Tr(html_row))
+    return table
 
