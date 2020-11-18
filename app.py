@@ -40,7 +40,13 @@ dfRetireDoctor = [dfResultData[6],dfResultData[7],dfResultData[6]+dfResultData[7
 dfThousandPerDoctor = idoct.makeThousandPerDoctor(dfTotalDoctor, idoct.npPopulation) # 1000명당 의사수
 dfPopulation = pd.DataFrame(np.around(idoct.npPopulation))
 dfPopulation.index = range(1950, 2048)
-dfPopulation
+npDoctorNum = np.around(np.array(dfThousandPerDoctor.iloc[60:]).T[0],2)
+npVisitDay = np.array(idoct.dfVisitDays['국내내원일수'])
+npVisitNumYear = (npVisitDay*1000)/npDoctorNum # 국내의사 1인당 외래진료수
+npVisitNumYearOECD = np.array(idoct.dfVisitDays['OECD1인당연간외래진료수'])
+dfVisitNumYear = pd.DataFrame(np.array([npVisitNumYear,npVisitNumYearOECD]).T)
+dfVisitNumYear.index = range(2010,2048)
+dfVisitNumYear.columns = ['대한민국','OECD평균']
 
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
@@ -102,7 +108,7 @@ sliderMarks[2047]= {'label':'2047','style':{'writing-mode': 'vertical-rl'}}
                State('input-3-state', 'value'),
                State('input-4-state', 'value')])
 def changeParameter(n_clicks, input1, input2, input3, input4):
-    global tuningSetAgeRate, tuningSetRetireRate, dfResultData, dfTotalDoctor, dfNewDoctor, dfDeadDoctor, dfRetireDoctor, dfThousandPerDoctor, dfPopulation
+    global tuningSetAgeRate, tuningSetRetireRate, dfResultData, dfTotalDoctor, dfNewDoctor, dfDeadDoctor, dfRetireDoctor, dfThousandPerDoctor, dfPopulation, npVisitNumYear, npVisitNumYearOECD
     
     for i in range(22):
         npBasicPopulation[i] = np.array([input1,input2,input3,input4])
@@ -114,7 +120,11 @@ def changeParameter(n_clicks, input1, input2, input3, input4):
     dfDeadDoctor = [dfResultData[4],dfResultData[5],dfResultData[4]+dfResultData[5]]   # 사망자수
     dfRetireDoctor = [dfResultData[6],dfResultData[7],dfResultData[6]+dfResultData[7]] # 은퇴자수
     dfThousandPerDoctor = idoct.makeThousandPerDoctor(dfTotalDoctor, idoct.npPopulation) # 1000명당 의사수
-
+    npDoctorNum = np.around(np.array(dfThousandPerDoctor.iloc[60:]).T[0],2)
+    npVisitDay = np.array(idoct.dfVisitDays['국내내원일수'])
+    npVisitNumYear = (npVisitDay*1000)/npDoctorNum # 국내의사 1인당 외래진료수
+    npVisitNumYearOECD = np.array(idoct.dfVisitDays['OECD1인당연간외래진료수'])
+    dfVisitNumYear = pd.DataFrame(np.array([npVisitNumYear,npVisitNumYearOECD]).T)
 
 # 전체 의사수 그래프 콜백함수
 @app.callback(Output('td-graph', 'figure'),
@@ -203,7 +213,7 @@ def makeRDYGraph(input):
 def makeTPDGraph(input):
     # use dfThousandPerDoctor
     global dfThousandPerDoctor
-    fig = dg.makeFigureDocPer1000(dfThousandPerDoctor)
+    fig = dg.makeFigureDocPer1000(dfThousandPerDoctor, [npVisitNumYear,npVisitNumYearOECD])
 
     return fig
 if __name__ == '__main__':

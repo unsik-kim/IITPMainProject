@@ -66,7 +66,7 @@ def create_layout(app):
                                     html.Div(
                                         [
                                             html.Table(
-                                                make_dash_table(dfNewDoctor[1]),
+                                                make_dash_table(dfThousandPerDoctor),
                                                 className="tiny-header",
                                             )
                                         ],
