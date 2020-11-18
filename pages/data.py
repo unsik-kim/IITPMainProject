@@ -1,72 +1,73 @@
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
-from utils import Header, make_dash_table
+from utils import Header, make_dash_table, setValue
 import pandas as pd
 import pathlib
 import iddModel.doctor as idoct
 import numpy as np
 
-npBasicPopulation = np.zeros([22,4])
-for i in range(22):
-        npBasicPopulation[i] = np.array([3000,50,0.6,0.6])
-
-tuningSetAgeRate = [[0.5, 0.5, 0.3, 0.8, 0.6, 0.6],[26,26,28,28,27,27],[40, 40, 40, 40, 40, 40]]
-tuningSetRetireRate = [[1.2, 1.2],[30, 30],[5.6, 5.6]]
-
-dfResultData = idoct.makeResultData(npBasicPopulation,[tuningSetAgeRate,tuningSetRetireRate])
-
-dfTotalDoctor = [dfResultData[0],dfResultData[1],dfResultData[0]+dfResultData[1]] # 의사수
-dfNewDoctor = [dfResultData[2],dfResultData[3],dfResultData[2]+dfResultData[3]]    # 신규의사수
-dfDeadDoctor = [dfResultData[4],dfResultData[5],dfResultData[4]+dfResultData[5]]   # 사망자수
-dfRetireDoctor = [dfResultData[6],dfResultData[7],dfResultData[6]+dfResultData[7]] # 은퇴자수
-dfThousandPerDoctor = idoct.makeThousandPerDoctor(dfTotalDoctor, idoct.npPopulation) # 1000명당 의사수
-dfPopulation = pd.DataFrame(np.around(idoct.npPopulation))
-dfPopulation.index = range(1950, 2048)
-dfPopulation
 
 
-def create_layout(app):
+dfUseDataTable = pd.DataFrame([
+    ['연도별 의사 국가시험 응시현황',
+    '연도별 정기 면허신고 의사 수',
+    '연도별 건강보험공단 신고 요양기관 활동 의사 수',
+    '연도별 의학대학, 의학전문대학원 현황',
+    '연도별 사망률 추계1',
+    '연도별 사망률 추계2',
+    '연도별 총 인구추계',
+    '연도별 군의관 입영정보',
+    '활동의사 연령분포표'],
+    ['기준연도, 응시자수, 합격자수',
+    '연도별, 성별 의사 수',
+    '연도별 의사 수',
+    '입학자수, 졸업자수, 재학생수',
+    '연도별, 성별, 연령별(1세) 사망률',
+    '연도별, 성별, 연령별(5세) 사망률',
+    '연도별 총 인구수',
+    '연도별 군의관 임관 수',
+    '연도별, 성별, 연령별(10세) 의사 수'],
+    ['한국보건의료인 국가시험원',
+    '보건복지부 통계연감',
+    '건강보험공단 심사평가원',
+    '교육부 통계연감',
+    '통계청',
+    'United Nations',
+    '통계청',
+    '병무청 통계연감',
+    '보건복지부 보건의료인력 실태조사'],
+    ['1952년~ 2020년',
+    '1955년~2019년',
+    '2003년~2020년',
+    '1977년~2019년',
+    '1970년~2047년',
+    '1950년~1970년',
+    '1950년~2047년',
+    '1998년~2019년',
+    '2011년~2016년']]).T
+
+dfUseDataTable.index = list(range(1,10))
+dfUseDataTable.columns = ['데이터 명','데이터 항목','출처','비고']
+
+def create_layout(app,valueSet):
     return html.Div(
         [
             Header(app),
             # page 5
             html.Div(
                 [
-                    # Row 1
+                    # 사용 데이터
                     html.Div(
                         [
-                            html.Div(
-                                [
-                                    html.H6(
-                                        ["Distributions"], className="subtitle padded"
-                                    ),
-                                    html.P(
-                                        [
-                                            "Distributions for this fund are scheduled quaterly"
-                                        ],
-                                        style={"color": "#7a7a7a"},
-                                    ),
-                                ],
-                                className="twelve columns",
-                            )
-                        ],
-                        className="row ",
-                    ),
-                    # Row 2
-                    html.Div(
-                        [
+                            html.Div('사용 데이터',  className="subtitle padded", style={'font-weight': 'bold','fontSize': 18}),
                             html.Div(
                                 [
                                     html.Br([]),
-                                    html.H6(
-                                        ["Dividend and capital gains distributions"],
-                                        className="subtitle tiny-header padded",
-                                    ),
                                     html.Div(
                                         [
                                             html.Table(
-                                                make_dash_table(dfThousandPerDoctor),
+                                                make_dash_table(dfUseDataTable),
                                                 className="tiny-header",
                                             )
                                         ],
@@ -78,35 +79,8 @@ def create_layout(app):
                         ],
                         className="row ",
                     ),
-                    # Row 3
-                    html.Div(
-                        [
-                            html.Div(
-                                [
-                                    html.H6(
-                                        ["Realized/unrealized gains as of 01/31/2018"],
-                                        className="subtitle tiny-header padded",
-                                    )
-                                ],
-                                className=" twelve columns",
-                            )
-                        ],
-                        className="row ",
-                    ),
-                    # Row 4
-                    html.Div(
-                        #[
-                        #    html.Div(
-                        #        [html.Table(make_dash_table(df_realized))],
-                        #        className="six columns",
-                        #    ),
-                        #    html.Div(
-                        #        [html.Table(make_dash_table(df_unrealized))],
-                        #        className="six columns",
-                        #    ),
-                        #],
-                        className="row ",
-                    ),
+                    
+
                 ],
                 className="sub_page",
             ),

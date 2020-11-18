@@ -5,6 +5,7 @@ import numpy as np
 from plotly.subplots import make_subplots
 
 
+# 연도별, 성별 사망의사수 그래프
 def makeDDFigure(dfDeadDoctor,year):
     year = str(year)
 
@@ -25,11 +26,11 @@ def makeDDFigure(dfDeadDoctor,year):
         deadPersonDict.setdefault(str(i), data)
     
     dead = deadPersonDict[year]
-    trace3 = go.Bar(x=dead.age, y=dead.Man, name='남자',text=dead.Man,textposition='outside')
-    trace4 = go.Bar(x=dead.age, y=dead.Woman, name='여자',text=dead.Woman,textposition='outside')
+    trace3 = go.Bar(x=dead.age, y=dead.Man, name='남성',text=dead.Man,textposition='outside')
+    trace4 = go.Bar(x=dead.age, y=dead.Woman, name='여성',text=dead.Woman,textposition='outside')
 
     data = [trace3, trace4]
-    layout = go.Layout(title=year+'년 연령별 성별 사망 의사 수')
+    layout = go.Layout(title=year+'년 연령별 성별 사망 의사수')
     fig = go.Figure(data=data, layout=layout)
 
     fig.update_layout(
@@ -41,8 +42,13 @@ def makeDDFigure(dfDeadDoctor,year):
         yaxis=dict(range=[0,30])
        
     )
+
+    fig.update_yaxes(title_text="사망 의사수")
+    fig.update_xaxes(title_text="연도") 
+
     return fig
 
+# 연도별, 성별 신규의사수
 def makeNDFigure(dfNewDoctor,year):
     year = str(year)
 
@@ -63,11 +69,11 @@ def makeNDFigure(dfNewDoctor,year):
         newPersonDict.setdefault(str(i), data)
     
     new = newPersonDict[year]
-    trace3 = go.Bar(x=new.age, y=new.Man, name='남자',text=new.Man,textposition='outside')
-    trace4 = go.Bar(x=new.age, y=new.Woman, name='여자',text=new.Woman,textposition='outside')
+    trace3 = go.Bar(x=new.age, y=new.Man, name='남성',text=new.Man,textposition='outside')
+    trace4 = go.Bar(x=new.age, y=new.Woman, name='여성',text=new.Woman,textposition='outside')
 
     data = [trace3, trace4]
-    layout = go.Layout(title=year+'년 연령별 성별 신규 의사 수')
+    layout = go.Layout(title=year+'년 연령별 성별 신규 의사수')
     fig = go.Figure(data=data, layout=layout)
 
     fig.update_layout(
@@ -78,8 +84,12 @@ def makeNDFigure(dfNewDoctor,year):
         showlegend=True,
         yaxis=dict(range=[0,2000]) 
     )
+
+    fig.update_yaxes(title_text="신규 의사수")
+    fig.update_xaxes(title_text="연도") 
     return fig
 
+# 연도별, 성별 은퇴의사수
 def makeRDFigure(dfRetireDoctor,year):
     year = str(year)
 
@@ -100,11 +110,11 @@ def makeRDFigure(dfRetireDoctor,year):
         retirePersonDict.setdefault(str(i), data)
     
     retire = retirePersonDict[year]
-    trace3 = go.Bar(x=retire.age, y=retire.Man, name='남자',text=retire.Man,textposition='outside')
-    trace4 = go.Bar(x=retire.age, y=retire.Woman, name='여자',text=retire.Woman,textposition='outside')
+    trace3 = go.Bar(x=retire.age, y=retire.Man, name='남성',text=retire.Man,textposition='outside')
+    trace4 = go.Bar(x=retire.age, y=retire.Woman, name='여성',text=retire.Woman,textposition='outside')
 
     data = [trace3, trace4]
-    layout = go.Layout(title=year+'년 연령별 성별 은퇴 의사 수')
+    layout = go.Layout(title=year+'년 연령별 성별 은퇴 의사수')
     fig = go.Figure(data=data, layout=layout)
 
     fig.update_layout(
@@ -116,6 +126,8 @@ def makeRDFigure(dfRetireDoctor,year):
         yaxis=dict(range=[0,120])
        
     )
+    fig.update_yaxes(title_text="은퇴 의사수")
+    fig.update_xaxes(title_text="연도") 
     return fig
 
 def getDataframe(dfResultPerson):
@@ -142,6 +154,7 @@ def slicingPerson(dfResultPerson, year):
     value.append(bothDoc[1].iloc[year])
     return value
 
+# 연도별, 성별 전체의사수 그래프
 def makeANDFigure(dfResultPerson, year):
     yearValue = int(year)
     yearIndex = yearValue-1950
@@ -155,11 +168,11 @@ def makeANDFigure(dfResultPerson, year):
     numOfMan = docManYear[yearValue].tolist()
     text = docManYear[yearValue]
     
-    trace3 = go.Bar(name='Man', x=list(docManYear['age']), y=list(docManYear[yearValue]))
-    trace4 = go.Bar(name = 'Woman', x=list(womOfYear['age']), y=list(womOfYear[yearValue]))
+    trace3 = go.Bar(name='남성', x=list(docManYear['age']), y=list(docManYear[yearValue]))
+    trace4 = go.Bar(name = '여성', x=list(womOfYear['age']), y=list(womOfYear[yearValue]))
 
     data = [trace3, trace4]
-    layout = go.Layout(title=str(year)+'년 연령별 의사 수')
+    layout = go.Layout(title=str(year)+'년 연령별 의사수')
     fig = go.Figure(data=data, layout=layout)
     fig.update_traces(text=text, textposition='outside')
     fig.update_layout(
@@ -169,6 +182,9 @@ def makeANDFigure(dfResultPerson, year):
         showlegend=True,
         yaxis=dict(range=[0,3000])
     )
+
+    fig.update_yaxes(title_text="의사수")
+    fig.update_xaxes(title_text="연도")
 
     return fig
 
@@ -195,31 +211,26 @@ def OECDDocGet():
     OECDPer1000RegressionYear = list(OECDPer1000Regression['Year'])
     OECDPer1000RegressionValue = list(OECDPer1000Regression['Value'])
     year = year+OECDPer1000RegressionYear
-    OECDValue = OECDValue+OECDPer1000RegressionValue
+    OECDValue = np.around(np.array(OECDValue+OECDPer1000RegressionValue),2)
 
     return OECDValue
 
-def makeFigureDocPer1000(dfThousandPerDoctor, npVisitData):
-    fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+# 1000명당 국내 의사수 그래프
+def makeFigureDocPer1000(dfThousandPerDoctor):
+    fig = go.Figure()
 
     docPer1000 = thousandDocGet(dfThousandPerDoctor)
     docPerThousend = list(docPer1000['docnum'])  # 1000명당 국내 의사 수 
     OECDPerData = OECDDocGet()
 
-
-    
     fig.add_trace(go.Scatter(x=np.array(range(1950,2048)), y=docPerThousend,
                         mode='lines',
-                        name='A-대한민국'), secondary_y=False)
+                        name='대한민국'))
     fig.add_trace(go.Scatter(x=np.array(range(1960,2048)), y=OECDPerData,
                         mode='lines',
-                        name='A-OECD평균'), secondary_y=False)
-    fig.add_trace(go.Scatter(x=np.array(range(2010,2048)), y=npVisitData[0],
-                        mode='lines',
-                        name='B-대한민국'), secondary_y=True)
-    fig.add_trace(go.Scatter(x=np.array(range(2010,2048)), y=npVisitData[1],
-                        mode='lines',
-                        name='B-OECD평균'), secondary_y=True)
+                        name='OECD평균'))
+
     fig.update_layout(margin=dict(l=0,r=0,t=1,b=0),    
         showlegend=True,
         legend=dict(
@@ -229,14 +240,39 @@ def makeFigureDocPer1000(dfThousandPerDoctor, npVisitData):
         x=0.01
     ))
 
-    # Set y-axes titles
-    fig.update_yaxes(title_text="<b>A-인구 1000명당 의사수<b>", secondary_y=False)
-    fig.update_yaxes(title_text="<b>B-의사 1명당 연간 외래진료수<b>", secondary_y=True)
+    fig.update_yaxes(title_text="인구 1000명당 의사수")
+    fig.update_xaxes(title_text="연도")                    
+
     return fig
 
+# 의사 1명당 연간 외래진료수 그래프
+def makeFigureVisitDoctor(npVisitData):
+    npVisitData = np.around(npVisitData,2)
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatter(x=np.array(range(2010,2048)), y=npVisitData[0],
+                        mode='lines',
+                        name='대한민국'))
+    fig.add_trace(go.Scatter(x=np.array(range(2010,2048)), y=npVisitData[1],
+                        mode='lines',
+                        name='OECD평균'))
+
+    fig.update_layout(margin=dict(l=0,r=0,t=1,b=0),    
+        showlegend=True,
+        legend=dict(
+        yanchor="top",
+        y=0.99,
+        xanchor="left",
+        x=0.01
+    ))
+
+    fig.update_yaxes(title_text="의사 1명당 연간 외래진료 수")
+    fig.update_xaxes(title_text="연도")                    
+
+    return fig
 
 # 연간 전체 의사수
-def makeFigureSumDoc(dfResultPerson,dfPopulation):
+def makeFigureSumDoc(dfResultPerson,dfPopulation,npRealDoctor, npRealWorkDoctor):
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     
     year = list(range(1950, 2048))
@@ -248,14 +284,29 @@ def makeFigureSumDoc(dfResultPerson,dfPopulation):
     
     fig.add_trace(go.Scatter(x=year, y=manSumDoc,
                         mode='lines',
-                        name='A-MAN'), secondary_y=False)
+                        name='A-추정 남성 활동 의사수'), secondary_y=False)
     fig.add_trace(go.Scatter(x=year, y=womSumDoc,
                         mode='lines',
-                        name='A-WOMAN'), secondary_y=False)
+                        name='A-추정 여성 활동 의사수'), secondary_y=False)
     fig.add_trace(go.Scatter(x=year, y=bothSumDoc,
                         mode='lines',
-                        name='A-BOTH'), secondary_y=False)
-    fig.add_trace(go.Scatter(x=year, y=popDoc,
+                        name='A-추청 전체 활동 의사수'), secondary_y=False)
+
+    fig.add_trace(go.Scatter(x=list(range(2003, 2021)), y=npRealWorkDoctor[53:71],
+                        mode='lines', visible='legendonly',
+                        name='A-실제 활동 의사수'), secondary_y=False)    
+
+    fig.add_trace(go.Scatter(x=list(range(1955, 2018)), y=npRealDoctor[1][5:79],
+                        mode='lines', visible='legendonly',
+                        name='A-실제 남성 신고 의사수'), secondary_y=False)
+    fig.add_trace(go.Scatter(x=list(range(1955, 2018)), y=npRealDoctor[2][5:79],
+                        mode='lines', visible='legendonly',
+                        name='A-실제 여성 신고 의사수'), secondary_y=False)
+    fig.add_trace(go.Scatter(x=list(range(1955, 2018)), y=npRealDoctor[0][5:79],
+                        mode='lines', visible='legendonly',
+                        name='A-실제 전체 신고 의사수'), secondary_y=False)     
+
+    fig.add_trace(go.Scatter(x=list(range(1950, 2047)), y=popDoc,
                         mode='lines',
                         name='B-인구수'), secondary_y=True)
     fig.update_layout(margin=dict(l=0,r=0,t=1,b=0),    
@@ -268,8 +319,9 @@ def makeFigureSumDoc(dfResultPerson,dfPopulation):
     ))
 
     # Set y-axes titles
-    fig.update_yaxes(title_text="<b>A-의사수</b>", secondary_y=False)
-    fig.update_yaxes(title_text="<b>B-인구수</b>", secondary_y=True)
+    fig.update_yaxes(title_text="A-의사수", secondary_y=False)
+    fig.update_yaxes(title_text="B-인구수", secondary_y=True)
+    fig.update_xaxes(title_text="연도")  
     return fig
 
 # 연간 은퇴 의사수
@@ -300,13 +352,13 @@ def makeFigureRetireDoc(dfRetirePerson):
     
     fig.add_trace(go.Scatter(x=year, y=manSumDoc,
                         mode='lines',
-                        name='MAN'))
+                        name='남성'))
     fig.add_trace(go.Scatter(x=year, y=womSumDoc,
                         mode='lines',
-                        name='WOMAN'))
+                        name='여성'))
     fig.add_trace(go.Scatter(x=year, y=bothSumDoc,
                         mode='lines',
-                        name='BOTH'))
+                        name='전체'))
     fig.update_layout(margin=dict(l=0,r=0,t=1,b=0),    
         showlegend=True,
         legend=dict(
@@ -316,6 +368,8 @@ def makeFigureRetireDoc(dfRetirePerson):
         x=0.01
     ))
 
+    fig.update_yaxes(title_text="은퇴 의사수")
+    fig.update_xaxes(title_text="연도")  
     return fig
 
 # 연간 사망 의사수
@@ -346,13 +400,13 @@ def makeFigureDeadDoc(dfDeadPerson):
     
     fig.add_trace(go.Scatter(x=year, y=manSumDoc,
                         mode='lines',
-                        name='MAN'))
+                        name='남성'))
     fig.add_trace(go.Scatter(x=year, y=womSumDoc,
                         mode='lines',
-                        name='WOMAN'))
+                        name='여성'))
     fig.add_trace(go.Scatter(x=year, y=bothSumDoc,
                         mode='lines',
-                        name='BOTH'))
+                        name='전체'))
     fig.update_layout(margin=dict(l=0,r=0,t=1,b=0),    
         showlegend=True,
         legend=dict(
@@ -362,6 +416,8 @@ def makeFigureDeadDoc(dfDeadPerson):
         x=0.01
     ))                    
 
+    fig.update_yaxes(title_text="사망 의사수")
+    fig.update_xaxes(title_text="연도")  
     return fig
 
 # 연간 신규 의사수
@@ -392,13 +448,13 @@ def makeFigureNewDoc(dfNewPerson):
     
     fig.add_trace(go.Scatter(x=year, y=manSumDoc,
                         mode='lines',
-                        name='MAN'))
+                        name='남성'))
     fig.add_trace(go.Scatter(x=year, y=womSumDoc,
                         mode='lines',
-                        name='WOMAN'))
+                        name='여성'))
     fig.add_trace(go.Scatter(x=year, y=bothSumDoc,
                         mode='lines',
-                        name='BOTH'))
+                        name='전체'))
     fig.update_layout(margin=dict(l=0,r=0,t=1,b=0),    
         showlegend=True,
         legend=dict(
@@ -407,4 +463,7 @@ def makeFigureNewDoc(dfNewPerson):
         xanchor="left",
         x=0.01
     ))
+
+    fig.update_yaxes(title_text="신규 의사수")
+    fig.update_xaxes(title_text="연도")  
     return fig

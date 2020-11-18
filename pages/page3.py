@@ -1,7 +1,7 @@
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
-from utils import Header
+from utils import Header, setValue
 import pandas as pd
 import pathlib
 
@@ -14,10 +14,11 @@ sliderMarks= {(i):{'label':str(i),'style':{'writing-mode': 'vertical-rl'}}for i 
 sliderMarks[1952]= {'label':'1952','style':{'writing-mode': 'vertical-rl'}}
 sliderMarks[2047]= {'label':'2047','style':{'writing-mode': 'vertical-rl'}}
 
-def create_layout(app):
+def create_layout(app,valueSet):
     return html.Div(
         [
             Header(app),
+            setValue(valueSet),
             # page 2
             html.Div(
                 [
@@ -25,16 +26,7 @@ def create_layout(app):
                         children=[
                             html.Div('연도별, 성별 사망 의사수',  className="subtitle padded", style={'font-weight': 'bold','fontSize': 18}),
                             html.Br(),
-                            html.Div('<값 조절>', style={'fontSize': 13}),
-                            dcc.Input(id='input-1-state', type='number', value=3000, min=0, step=100),
-                            dcc.Input(id='input-2-state', type='number', value=50, min=0, step=50),
-                            dcc.Input(id='input-3-state', type='number', value=0.6, step=0.1, min=0, max=1),
-                            dcc.Input(id='input-4-state', type='number', value=0.6, step=0.1, min=0, max=1),
-                            html.Button(id='submit-button-state', n_clicks=0, children='변경'),
-                            html.Br(),
                             html.Div(id='output-state', style={'font-weight': 'bold','fontSize': 18}),
-                            html.Br(),
-                            html.Br(),
                              dcc.Graph(id='dd-graph'),
                             dcc.Slider(
                                 id='dd-year-slider',
@@ -45,9 +37,15 @@ def create_layout(app):
                                 step=1,
                                 updatemode='drag'
                             ),
-                            html.Br(), html.Br(),
+                            html.Br([]),
+                            html.Div('1) 사망 의사수 - 본 연구를 통해 도출된 추정 연도별/성별/연령별 사망 의사수', style={'fontSize': 12}),
+                            html.Br([]), html.Br([]),html.Br([]),html.Br([]),
                             html.Div('연간 사망 의사수', className="subtitle padded", style={'font-weight': 'bold','fontSize': 18}),
-                            dcc.Graph(id='ddy-graph')
+                            html.Br(), html.Br(),
+                            dcc.Graph(id='ddy-graph'),
+                            html.Br([]),
+                            html.Div('1) 사망 의사수 - 본 연구를 통해 도출된 추정 연도별/성별 사망 의사수', style={'fontSize': 12}),
+                            html.Br([]),
                         ]),
                 ],
                 className="sub_page",

@@ -7,9 +7,10 @@ dfDeathWoman = pd.read_excel('data/여성사망률추이.xlsx').set_index(['year
 dfDeathMan = pd.read_excel('data/남성사망률추이.xlsx').set_index(['year']).iloc[:98,:100]
 npDeathWoman = np.array(dfDeathWoman)
 npDeathMan = np.array(dfDeathMan)
-
 # 1950~2047년
 dfDoctorData = pd.read_excel('data/doctorData.xlsx').set_index(['년도']).iloc[:98,:]
+npRealDoctor = np.around(np.array(dfDoctorData[['의사수/계','의사수/남','의사수/여']])).T
+npRealWorkDoctor = np.around(np.array(dfDoctorData['건강보험\n신고의사'])).T
 npPassDoctor = np.around(np.array(dfDoctorData[['의대졸합격/남', '의대졸합격/여', '의전졸합격/남', '의전졸합격/여', '불합합격/남', '불합합격/여']]))
 npDoctorExam = np.around(np.array(dfDoctorData[['의사고시 합격자수','의사고시 불합격자수']]))
 npPopulation = np.array(dfDoctorData['추계인구'])
@@ -215,7 +216,7 @@ def makeThousandPerDoctor(dfResultPerson, npPopulation):
     startYear = 1950
     dfResultPersonSum = dfResultPerson[2].sum(axis=1)
     npResultPersonSum = np.array(dfResultPersonSum)
-    dfThousandPerDoctor = pd.DataFrame(npResultPersonSum/npPopulation*1000)
+    dfThousandPerDoctor = pd.DataFrame(np.around((npResultPersonSum/npPopulation*1000),2))
     dfThousandPerDoctor.index = range(startYear, 2048)
     return dfThousandPerDoctor
 

@@ -24,6 +24,8 @@ from pages import (
     data
 )
 #---데이터---
+valueSet = [3000,50,0.6,0.6]
+
 npBasicPopulation = np.zeros([22,4])
 for i in range(22):
         npBasicPopulation[i] = np.array([3000,50,0.6,0.6])
@@ -31,8 +33,9 @@ for i in range(22):
 tuningSetAgeRate = [[0.5, 0.5, 0.3, 0.8, 0.6, 0.6],[26,26,28,28,27,27],[40, 40, 40, 40, 40, 40]]
 tuningSetRetireRate = [[1.2, 1.2],[30, 30],[5.6, 5.6]]
 
+npRealDoctor = idoct.npRealDoctor
+npRealWorkDoctor = idoct.npRealWorkDoctor
 dfResultData = idoct.makeResultData(npBasicPopulation,[tuningSetAgeRate,tuningSetRetireRate])
-
 dfTotalDoctor = [dfResultData[0],dfResultData[1],dfResultData[0]+dfResultData[1]] # 의사수
 dfNewDoctor = [dfResultData[2],dfResultData[3],dfResultData[2]+dfResultData[3]]    # 신규의사수
 dfDeadDoctor = [dfResultData[4],dfResultData[5],dfResultData[4]+dfResultData[5]]   # 사망자수
@@ -53,11 +56,6 @@ app = dash.Dash(
 )
 server = app.server
 
-#---app slider--
-sliderMarks= {(i):{'label':str(i),'style':{'writing-mode': 'vertical-rl'}}for i in range(1955,2050,5)}
-sliderMarks[1952]= {'label':'1952','style':{'writing-mode': 'vertical-rl'}}
-sliderMarks[2047]= {'label':'2047','style':{'writing-mode': 'vertical-rl'}}
-
 # Describe the layout/ UI of the app
 app.layout = html.Div(
     [dcc.Location(id="url", refresh=False), html.Div(id="page-content")]
@@ -67,38 +65,32 @@ app.layout = html.Div(
 @app.callback(Output("page-content", "children"), [Input("url", "pathname")])
 def display_page(pathname):
     if pathname == "/idd-doctor-report/page1":
-        return page1.create_layout(app)
+        return page1.create_layout(app,valueSet)
     elif pathname == "/idd-doctor-report/page2":
-        return page2.create_layout(app)
+        return page2.create_layout(app,valueSet)
     elif pathname == "/idd-doctor-report/page3":
-        return page3.create_layout(app)
+        return page3.create_layout(app,valueSet)
     elif pathname == "/idd-doctor-report/page4":
-        return page4.create_layout(app)
+        return page4.create_layout(app,valueSet)
     elif pathname == "/idd-doctor-report/page5":
-        return page5.create_layout(app)
+        return page5.create_layout(app,valueSet)
     elif pathname == "/idd-doctor-report/more":
         return more.create_layout(app)
     elif pathname == "/idd-doctor-report/data":
-        return data.create_layout(app)
+        return data.create_layout(app,valueSet)
     elif pathname == "/idd-doctor-report/full-view":
         return (
             fullmain.create_layout(app),         
-            page1.create_layout(app),
-            page2.create_layout(app),
-            page3.create_layout(app),
-            page4.create_layout(app),
-            page5.create_layout(app),
+            page1.create_layout(app,valueSet),
+            page2.create_layout(app,valueSet),
+            page3.create_layout(app,valueSet),
+            page4.create_layout(app,valueSet),
+            page5.create_layout(app,valueSet),
             more.create_layout(app),
-            data.create_layout(app)
+            data.create_layout(app,valueSet)
         )
     else:
         return main.create_layout(app)
-
-
-#---app slider--
-sliderMarks= {(i):{'label':str(i),'style':{'writing-mode': 'vertical-rl'}}for i in range(1955,2050,5)}
-sliderMarks[1952]= {'label':'1952','style':{'writing-mode': 'vertical-rl'}}
-sliderMarks[2047]= {'label':'2047','style':{'writing-mode': 'vertical-rl'}}
 
 # submit 눌렀을때-> 받아온 값으로 새로 df만들고 return으로 값이 변화하는지 보여주기 
 @app.callback(Output('output-state', 'children'),
@@ -108,8 +100,8 @@ sliderMarks[2047]= {'label':'2047','style':{'writing-mode': 'vertical-rl'}}
                State('input-3-state', 'value'),
                State('input-4-state', 'value')])
 def changeParameter(n_clicks, input1, input2, input3, input4):
-    global tuningSetAgeRate, tuningSetRetireRate, dfResultData, dfTotalDoctor, dfNewDoctor, dfDeadDoctor, dfRetireDoctor, dfThousandPerDoctor, dfPopulation, npVisitNumYear, npVisitNumYearOECD
-    
+    global tuningSetAgeRate, tuningSetRetireRate, dfResultData, dfTotalDoctor, dfNewDoctor, dfDeadDoctor, dfRetireDoctor, dfThousandPerDoctor, dfPopulation, npVisitNumYear, npVisitNumYearOECD, valueSet
+    valueSet = [input1,input2,input3,input4]
     for i in range(22):
         npBasicPopulation[i] = np.array([input1,input2,input3,input4])
 
@@ -136,13 +128,14 @@ def makeTDGraph(input1, input2, input3):
 
     return fig
 
+
 # 연간 전체 의사수 그래프 콜백함수
 @app.callback(Output('tdy-graph', 'figure'),
               [Input('output-state', 'children')])
 def makeTDYGraph(input1):
     # use dfResultPerson
-    global dfTotalDoctor, dfPopulation
-    fig = dg.makeFigureSumDoc(dfTotalDoctor,dfPopulation)
+    global dfTotalDoctor, dfPopulation, npRealDoctor, npRealWorkDoctor
+    fig = dg.makeFigureSumDoc(dfTotalDoctor,dfPopulation,npRealDoctor, npRealWorkDoctor)
 
     return fig
 
@@ -213,11 +206,22 @@ def makeRDYGraph(input):
 def makeTPDGraph(input):
     # use dfThousandPerDoctor
     global dfThousandPerDoctor
-    fig = dg.makeFigureDocPer1000(dfThousandPerDoctor, [npVisitNumYear,npVisitNumYearOECD])
+    fig = dg.makeFigureDocPer1000(dfThousandPerDoctor)
 
     return fig
+
+# 의사 1명당 연간 진료수 그래프 콜백함수
+@app.callback(Output('dpd-graph', 'figure'),
+              [Input('output-state', 'children')])
+def makeTPDGraph(input):
+    # use dfThousandPerDoctor
+    global npVisitNumYear, npVisitNumYearOECD
+    fig = dg.makeFigureVisitDoctor([npVisitNumYear,npVisitNumYearOECD])
+
+    return fig
+
 if __name__ == '__main__':
     app.run_server(
-        port=50008,
+        port=50007,
         host='0.0.0.0'
     )

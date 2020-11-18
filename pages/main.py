@@ -175,7 +175,9 @@ def create_layout(app):
                                         className="row",
                                         style={
                                             "background-color": "#f9f9f9",
-                                            "padding-bottom": "30px",
+                                            "padding-top": "0.5cm",
+                                            "padding-bottom": "0.5cm",
+                                            'justify-content':'center','align-items':'center'
                                         },
                                     ),
                                 ],

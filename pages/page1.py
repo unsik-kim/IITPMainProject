@@ -1,7 +1,7 @@
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
-from utils import Header
+from utils import Header,setValue
 import pandas as pd
 import pathlib
 
@@ -13,10 +13,11 @@ sliderMarks= {(i):{'label':str(i),'style':{'writing-mode': 'vertical-rl'}}for i 
 sliderMarks[1952]= {'label':'1952','style':{'writing-mode': 'vertical-rl'}}
 sliderMarks[2047]= {'label':'2047','style':{'writing-mode': 'vertical-rl'}}
 
-def create_layout(app):
+def create_layout(app,valueSet):
     return html.Div(
         [
             Header(app),
+            setValue(valueSet),
             # page 2
             html.Div(
                 [
@@ -24,15 +25,7 @@ def create_layout(app):
                         children=[
                             html.Div('연도별, 성별 전체 의사수',  className="subtitle padded", style={'font-weight': 'bold','fontSize': 18}),
                             html.Br(),
-                            html.Div('<시나리오 조절>', style={'fontSize': 13}),
-                            dcc.Input(id='input-1-state', type='number', value=3000, min=0, step=100),
-                            dcc.Input(id='input-2-state', type='number', value=50, min=0, step=50),
-                            dcc.Input(id='input-3-state', type='number', value=0.6, step=0.1, min=0, max=1),
-                            dcc.Input(id='input-4-state', type='number', value=0.6, step=0.1, min=0, max=1),
-                            html.Button(id='submit-button-state', n_clicks=0, children='변경'),
-                            html.Br(),
                             html.Div(id='output-state', style={'font-weight': 'bold', 'fontSize': 20}),
-                            html.Br(),
                             dcc.Graph(id='td-graph'),
                             dcc.Slider(
                                 id='and-year-slider',
@@ -43,10 +36,19 @@ def create_layout(app):
                                 step=1,
                                 updatemode='drag'
                             ),
-                            html.Br([]), html.Br([]),
+                            html.Br([]),
+                            html.Div('1) 의사수 - 본 연구를 통해 도출된 추정 연도별/성별/연령별 활동 의사수', style={'fontSize': 12}),
+                            html.Br([]), html.Br([]),html.Br([]),html.Br([]),
                             html.Div('연간 전체 의사수', className="subtitle padded", style={'font-weight': 'bold','fontSize': 18}),
-                            html.Br([]),html.Br([]),
-                            dcc.Graph(id='tdy-graph')
+                            html.Br([]),
+                            html.Div('* 범례 클릭 시 해당 데이터가 활성화됩니다.', style={'fontSize': 12}),
+                            html.Br([]),
+                            dcc.Graph(id='tdy-graph'),
+                            html.Br([]),
+                            html.Div('1) 추정 활동 의사수 - 본 연구를 통해 도출된 추정 활동 의사수', style={'fontSize': 12}),
+                            html.Div('2) 실제 활동 의사수 - 건강보험공단에 신고된 요양기관에서 활동중인 의사수 / 출처-보건복지부', style={'fontSize': 12}),
+                            html.Div('3) 실제 신고 의사수 - 보건복지부 면허관리시스템에 등록된 면허의사수 / 출처-보건복지부', style={'fontSize': 12}),
+                            html.Br([]),
                         ]),
                 ],
                 className="sub_page",
