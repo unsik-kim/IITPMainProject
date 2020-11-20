@@ -44,7 +44,7 @@ def makeDDFigure(dfDeadDoctor,year):
     )
 
     fig.update_yaxes(title_text="사망 의사수")
-    fig.update_xaxes(title_text="연도") 
+    fig.update_xaxes(title_text="연령") 
 
     return fig
 
@@ -86,7 +86,7 @@ def makeNDFigure(dfNewDoctor,year):
     )
 
     fig.update_yaxes(title_text="신규 의사수")
-    fig.update_xaxes(title_text="연도") 
+    fig.update_xaxes(title_text="연령") 
     return fig
 
 # 연도별, 성별 은퇴의사수
@@ -127,7 +127,7 @@ def makeRDFigure(dfRetireDoctor,year):
        
     )
     fig.update_yaxes(title_text="은퇴 의사수")
-    fig.update_xaxes(title_text="연도") 
+    fig.update_xaxes(title_text="연령") 
     return fig
 
 def getDataframe(dfResultPerson):
@@ -184,7 +184,7 @@ def makeANDFigure(dfResultPerson, year):
     )
 
     fig.update_yaxes(title_text="의사수")
-    fig.update_xaxes(title_text="연도")
+    fig.update_xaxes(title_text="연령")
 
     return fig
 

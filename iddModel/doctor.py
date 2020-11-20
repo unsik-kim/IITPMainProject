@@ -147,18 +147,18 @@ def makeResultPersonArray(newPersonArray, tuningSet):
 
 
 def sumPeopleUseAge(npData):
-    yearSize = len(npData)
+    yearSize = len(npData[0])
     resultData = np.zeros([yearSize, 3, 12])
     
     for i in range(yearSize):
         for j in range(2):
             # 남/여 소계 계산
-            resultData[i][j][0] = np.sum(npData[i][j])
-            resultData[i][j][1] = np.sum(npData[i][j][0:30])
-            resultData[i][j][2] = np.sum(npData[i][j][30:40])
-            resultData[i][j][3] = np.sum(npData[i][j][40:50])
-            resultData[i][j][4] = np.sum(npData[i][j][50:60])
-            resultData[i][j][5] = np.sum(npData[i][j][60:])
+            resultData[i][j][0] = np.sum(npData[j][i])
+            resultData[i][j][1] = np.sum(npData[j][i][0:30])
+            resultData[i][j][2] = np.sum(npData[j][i][30:40])
+            resultData[i][j][3] = np.sum(npData[j][i][40:50])
+            resultData[i][j][4] = np.sum(npData[j][i][50:60])
+            resultData[i][j][5] = np.sum(npData[j][i][60:])
             
             # 남/여 비율 계산
             for n in range(6):
