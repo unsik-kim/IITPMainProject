@@ -69,8 +69,8 @@ def makeAlivePerson(npData,year):
 
 def makeWorkPerson(npData,tuningSet):
     valueList = np.zeros([2,100])
-    c1 = tuningSet[0][2]/((tuningSet[0][0]**(100-tuningSet[0][1]))-1)
-    c2 = tuningSet[1][2]/((tuningSet[1][0]**(100-tuningSet[1][1]))-1)
+    c1 = tuningSet[2][0]/((tuningSet[0][0]**(100-tuningSet[1][0]))-1)
+    c2 = tuningSet[2][1]/((tuningSet[0][1]**(100-tuningSet[1][1]))-1)
 
     for i in range(100):
         result1 = ((tuningSet[0][0]**(i-tuningSet[1][0]))-1)*c1
@@ -94,9 +94,9 @@ def makeArrayUseModel(tuningList):
     model1 = makeLogModel2(tuningList[0])
     model2 = makeLogModel2(tuningList[1])
     model3 = makeLogModel2(tuningList[2])
-    model4 = makeLogModel2(tuningList[3])
-    model5 = makeLogModel2(tuningList[4])
-    model6 = makeLogModel2(tuningList[5])
+    # model1 = makeLogModel2(tuningList[3])
+    # model2 = makeLogModel2(tuningList[4])
+    # model3 = makeLogModel2(tuningList[5])
 
     resultData =  np.array([model1, model2, model3, model4, model5, model6])
     
