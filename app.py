@@ -222,6 +222,6 @@ def makeTPDGraph(input):
 
 if __name__ == '__main__':
     app.run_server(
-        port=50001,
+        port=3306,
         host='0.0.0.0'
     )
