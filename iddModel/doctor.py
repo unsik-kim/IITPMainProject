@@ -12,7 +12,7 @@ dfDoctorData = pd.read_excel('data/doctorData.xlsx').set_index(['년도']).iloc[
 npRealDoctor = np.around(np.array(dfDoctorData[['의사수/계','의사수/남','의사수/여']])).T
 npRealWorkDoctor = np.around(np.array(dfDoctorData['건강보험\n신고의사'])).T
 npPassDoctor = np.around(np.array(dfDoctorData[['의대졸합격/남', '의대졸합격/여', '의전졸합격/남', '의전졸합격/여', '불합합격/남', '불합합격/여']]))
-npDoctorExam = np.around(np.array(dfDoctorData[['의사고시 합격자수','의사고시 불합격자수']]))
+npDoctorExam = np.around(np.array(dfDoctorData[['의사고시합격자수','의사고시최종불합격자수']]))
 npPopulation = np.array(dfDoctorData['추계인구'])
 npPassDoctorRate = np.array(dfDoctorData[['의대졸비율/남', '의대졸비율/여', '의전졸비율/남', '의전졸비율/여', '불합비율/남', '불합비율/여']])
 
@@ -221,29 +221,31 @@ def makeThousandPerDoctor(dfResultPerson, npPopulation):
     return dfThousandPerDoctor
 
 def makeFuturePerson(npBasicPopulation):
+    futureStartYear = 2027
+    fsyValue = 2027-1950
     yearSize = 98
     optSize = len(npBasicPopulation)
     npFuturePerson = np.zeros([yearSize,6])
     
     for i in range(optSize):
-        npDoctorExam[i+76][0] = (npBasicPopulation[i][0]*0.94)+(npBasicPopulation[i][1]*0.94) #의대 합격자
-        npDoctorExam[i+76][1] = (npBasicPopulation[i][0]*0.06)+(npBasicPopulation[i][1]*0.06) # 의대 불합격자 
+        npDoctorExam[i+fsyValue][0] = (npBasicPopulation[i][0]*0.94)+(npBasicPopulation[i][1]*0.94) #의대 합격자
+        npDoctorExam[i+fsyValue][1] = (npBasicPopulation[i][0]*0.06)+(npBasicPopulation[i][1]*0.06) # 의대 불합격자 
         
-        popSum = npBasicPopulation[i][0]+npBasicPopulation[i][1]+npDoctorExam[i+75][1]
+        popSum = npBasicPopulation[i][0]+npBasicPopulation[i][1]+npDoctorExam[i+(fsyValue-1)][1]
 
-        npPassDoctorRate[i+76][0] = (npBasicPopulation[i][0]*npBasicPopulation[i][2])/popSum #의대남자비율
-        npPassDoctorRate[i+76][1] = (npBasicPopulation[i][0]*(1-npBasicPopulation[i][2]))/popSum #의대여자비율
-        npPassDoctorRate[i+76][2] = (npBasicPopulation[i][1]*npBasicPopulation[i][3])/popSum #의전원남자비율
-        npPassDoctorRate[i+76][3] = (npBasicPopulation[i][1]*(1-npBasicPopulation[i][3]))/popSum #의전원여자비율
-        npPassDoctorRate[i+76][4] = npDoctorExam[i+75][1]*(npPassDoctorRate[i+76][0]+npPassDoctorRate[i+76][2])/popSum # 불합격남자비율
-        npPassDoctorRate[i+76][5] = npDoctorExam[i+75][1]*(npPassDoctorRate[i+76][1]+npPassDoctorRate[i+76][3])/popSum # 불합격여자비율
+        npPassDoctorRate[i+fsyValue][0] = (npBasicPopulation[i][0]*npBasicPopulation[i][2])/popSum #의대남자비율
+        npPassDoctorRate[i+fsyValue][1] = (npBasicPopulation[i][0]*(1-npBasicPopulation[i][2]))/popSum #의대여자비율
+        npPassDoctorRate[i+fsyValue][2] = (npBasicPopulation[i][1]*npBasicPopulation[i][3])/popSum #의전원남자비율
+        npPassDoctorRate[i+fsyValue][3] = (npBasicPopulation[i][1]*(1-npBasicPopulation[i][3]))/popSum #의전원여자비율
+        npPassDoctorRate[i+fsyValue][4] = npDoctorExam[i+(fsyValue-1)][1]*(npPassDoctorRate[i+fsyValue][0]+npPassDoctorRate[i+fsyValue][2])/popSum # 불합격남자비율
+        npPassDoctorRate[i+fsyValue][5] = npDoctorExam[i+(fsyValue-1)][1]*(npPassDoctorRate[i+fsyValue][1]+npPassDoctorRate[i+fsyValue][3])/popSum # 불합격여자비율
         
-        npFuturePerson[i+76][0] = np.around(popSum * npPassDoctorRate[i+76][0])
-        npFuturePerson[i+76][1] = np.around(popSum * npPassDoctorRate[i+76][1])
-        npFuturePerson[i+76][2] = np.around(popSum * npPassDoctorRate[i+76][2])
-        npFuturePerson[i+76][3] = np.around(popSum * npPassDoctorRate[i+76][3])
-        npFuturePerson[i+76][4] = np.around(popSum * npPassDoctorRate[i+76][4])
-        npFuturePerson[i+76][5] = np.around(popSum * npPassDoctorRate[i+76][5])
+        npFuturePerson[i+fsyValue][0] = np.around(popSum * npPassDoctorRate[i+fsyValue][0])
+        npFuturePerson[i+fsyValue][1] = np.around(popSum * npPassDoctorRate[i+fsyValue][1])
+        npFuturePerson[i+fsyValue][2] = np.around(popSum * npPassDoctorRate[i+fsyValue][2])
+        npFuturePerson[i+fsyValue][3] = np.around(popSum * npPassDoctorRate[i+fsyValue][3])
+        npFuturePerson[i+fsyValue][4] = np.around(popSum * npPassDoctorRate[i+fsyValue][4])
+        npFuturePerson[i+fsyValue][5] = np.around(popSum * npPassDoctorRate[i+fsyValue][5])
         
     return npFuturePerson
 

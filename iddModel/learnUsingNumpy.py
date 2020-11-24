@@ -11,7 +11,7 @@ npDeathMan = np.array(dfDeathMan)
 # 1950~2047년
 dfDoctorData = pd.read_excel('data/doctorData.xlsx').set_index(['년도']).iloc[:98,:]
 npPassDoctor = np.around(np.array(dfDoctorData[['의대졸합격/남', '의대졸합격/여', '의전졸합격/남', '의전졸합격/여', '불합합격/남', '불합합격/여']]))
-npDoctorExam = np.around(np.array(dfDoctorData[['의사고시 합격자수','의사고시 불합격자수']]))
+npDoctorExam = np.around(np.array(dfDoctorData[['의사고시합격자수','의사고시불합격자수']]))
 npPopulation = np.array(dfDoctorData['추계인구'])
 npPassDoctorRate = np.array(dfDoctorData[['의대졸비율/남', '의대졸비율/여', '의전졸비율/남', '의전졸비율/여', '불합비율/남', '불합비율/여']])
 

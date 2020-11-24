@@ -26,8 +26,8 @@ from pages import (
 #---데이터---
 valueSet = [3000,50,0.6,0.6]
 
-npBasicPopulation = np.zeros([22,4])
-for i in range(22):
+npBasicPopulation = np.zeros([21,4])
+for i in range(21):
         npBasicPopulation[i] = np.array([3000,50,0.6,0.6])
 
 tuningSetAgeRate = [[0.5, 0.5, 0.3, 0.8, 0.6, 0.6],[26,26,28,28,27,27],[40, 40, 40, 40, 40, 40]]
@@ -102,7 +102,7 @@ def display_page(pathname):
 def changeParameter(n_clicks, input1, input2, input3, input4):
     global tuningSetAgeRate, tuningSetRetireRate, dfResultData, dfTotalDoctor, dfNewDoctor, dfDeadDoctor, dfRetireDoctor, dfThousandPerDoctor, dfPopulation, npVisitNumYear, npVisitNumYearOECD, valueSet
     valueSet = [input1,input2,input3,input4]
-    for i in range(22):
+    for i in range(21):
         npBasicPopulation[i] = np.array([input1,input2,input3,input4])
 
     dfResultData = idoct.makeResultData(npBasicPopulation,[tuningSetAgeRate,tuningSetRetireRate])
@@ -213,7 +213,7 @@ def makeTPDGraph(input):
 # 의사 1명당 연간 진료수 그래프 콜백함수
 @app.callback(Output('dpd-graph', 'figure'),
               [Input('output-state', 'children')])
-def makeTPDGraph(input):
+def makeOPDGraph(input):
     # use dfThousandPerDoctor
     global npVisitNumYear, npVisitNumYearOECD
     fig = dg.makeFigureVisitDoctor([npVisitNumYear,npVisitNumYearOECD])
@@ -222,6 +222,6 @@ def makeTPDGraph(input):
 
 if __name__ == '__main__':
     app.run_server(
-        port=3306,
+        port=50001,
         host='0.0.0.0'
     )
