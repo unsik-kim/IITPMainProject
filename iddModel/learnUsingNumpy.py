@@ -124,11 +124,11 @@ def makeAlivePerson(npData,year):
     return resultData
 
 
-def makeWorkPerson(npData,tuningSet):
+def makeWorkPerson(npData,tuningSet, year):
     valueList = np.zeros([2,100])
-    c = tuningSet[2]/((tuningSet[0]**(100-tuningSet[1]))-1)
+    c = ((tuningSet[0]**(100-tuningSet[1]))-1)
     for i in range(100):
-        resultRate = ((tuningSet[0]**(i-tuningSet[1]))-1)*c
+        resultRate = ((tuningSet[0]**(i-tuningSet[1]))-1)*(tuningSet[2]*(year+1950)-tuningSet[3])/c
 
         if resultRate < 0:
             valueList[0][i] = 0
@@ -188,7 +188,7 @@ def makeResultPersonArray(tuningSet):
         # 사망률 적용 / aliveData -> 2 x 100
         aliveData = makeAlivePerson(shiftData, i)
         # 은퇴율 적용 / workData -> 2 x 100
-        workData = makeWorkPerson(aliveData, tuningSet[1])
+        workData = makeWorkPerson(aliveData, tuningSet[1], i)
         # 최종 계산
         npResultPerson[i] =  workData + npNewPerson[i]
        
