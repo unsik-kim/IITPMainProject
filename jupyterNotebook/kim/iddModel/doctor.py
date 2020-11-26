@@ -94,9 +94,9 @@ def makeArrayUseModel(tuningList):
     model1 = makeLogModel2(tuningList[0])
     model2 = makeLogModel2(tuningList[1])
     model3 = makeLogModel2(tuningList[2])
-    model1 = makeLogModel2(tuningList[3])
-    model2 = makeLogModel2(tuningList[4])
-    model3 = makeLogModel2(tuningList[5])
+    # model1 = makeLogModel2(tuningList[3])
+    # model2 = makeLogModel2(tuningList[4])
+    # model3 = makeLogModel2(tuningList[5])
 
     resultData =  np.array([model1, model2, model3, model4, model5, model6])
     
