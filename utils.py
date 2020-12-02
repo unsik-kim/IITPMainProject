@@ -106,7 +106,7 @@ def setValue(valueSet=[3000,50,0.6,0.6]):
         html.Button(id='submit-button-state', n_clicks=0, children='변경'),
         html.Br(),
         html.Div('  의대입학정원 / 의전원입학정원 / 의대입학남성비 / 의전원입학남성비 /', style={'fontSize': 12}),
-        html.Div('* 2020년 이후 입학정원 조절을 통해 2025년 이후부터 발생되는 신규 의사수 조절이 가능합니다.', style={'fontSize': 12}),
+        html.Div('* 2020년 이후 입학정원 조절을 통해 2026년 이후부터 발생되는 신규 의사수 조절이 가능합니다.', style={'fontSize': 12}),
         ])
     return setValueLayout
 

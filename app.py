@@ -31,7 +31,7 @@ for i in range(21):
         npBasicPopulation[i] = np.array([3000,50,0.6,0.6])
 
 tuningSetAgeRate = [[0.5, 0.5, 0.3, 0.8, 0.6, 0.6],[26,26,28,28,27,27],[40, 40, 40, 40, 40, 40]]
-tuningSetRetireRate = [[1.2, 1.2],[30, 30],[5.6, 5.6]]
+tuningSetRetireRate = [[1.2,30,5.6,0,0],[1.2,30,5.6,0,0]]
 
 npRealDoctor = idoct.npRealDoctor
 npRealWorkDoctor = idoct.npRealWorkDoctor
