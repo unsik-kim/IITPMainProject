@@ -43,6 +43,7 @@ def clusterAgeModel(rate,st,end):
     npRateData = npData / sumValue
     return npRateData
 
+#사망 적용 후 남은 인력
 def makeAlivePerson(npData,year):
     
     deathRate = np.array([npDeathMan[year], npDeathWoman[year]])
@@ -51,7 +52,7 @@ def makeAlivePerson(npData,year):
     
     return [resultData, deadPerson]
 
-
+#은퇴 인력 계산 후 잔존 인력
 def makeWorkPerson(npData,tuningSet,year):
     valueList = np.zeros([2,100])
     c1 = ((tuningSet[0][0]**(100-tuningSet[0][1]))-1)
@@ -67,8 +68,7 @@ def makeWorkPerson(npData,tuningSet,year):
     
     return [result, retirePerson]
 
-
-
+#항목별 모델 리스트
 def makeArrayUseModel(tuningList):
     model1 = clusterAgeModel(tuningList[0][0], tuningList[1][0], tuningList[2][0]) # 의대 남
     model2 = clusterAgeModel(tuningList[0][1], tuningList[1][1], tuningList[2][1]) # 의대 여
@@ -81,12 +81,13 @@ def makeArrayUseModel(tuningList):
     
     return resultData
 
+#신규 의사 수
 def makeNewPerson(npData, tuningSet):
     oldSize = 100
     yearSize = len(npData)
     modelSize = len(npData[0])
     
-    #모델 적용 배열 98 x 6 x 100
+    #모델 적용 배열 98 x 6(항목별) x 100
     applyModelArray = np.zeros((yearSize,modelSize,oldSize))
 
     #신규인원 배열 98 x 2 x 100
@@ -107,6 +108,7 @@ def makeNewPerson(npData, tuningSet):
     
     return resultData
 
+#연령증가
 def shiftOld(personArray):
     dataArray = np.zeros((2,len(personArray[0])))
     dataArray[0] = np.roll(personArray[0], 1)  
@@ -148,7 +150,6 @@ def makeResultPersonArray(newPersonArray, tuningSet):
             
             
     return [resultPersonArray,newPersonArray,deadPersonArray,retirePersonArray]
-
 
 def sumPeopleUseAge(npData):
     yearSize = len(npData[0])

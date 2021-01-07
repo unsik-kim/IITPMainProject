@@ -100,7 +100,7 @@ def display_page(pathname):
                State('input-3-state', 'value'),
                State('input-4-state', 'value')])
 def changeParameter(n_clicks, input1, input2, input3, input4):
-    global tuningSetAgeRate, tuningSetRetireRate, dfResultData, dfTotalDoctor, dfNewDoctor, dfDeadDoctor, dfRetireDoctor, dfThousandPerDoctor, dfPopulation, npVisitNumYear, npVisitNumYearOECD, valueSet
+    global tuningSetAgeRate, tuningSetRetireRate, dfResultData, dfTotalDoctor, dfNewDoctor, dfDeadDoctor, dfRetireDoctor, dfThousandPerDoctor, dfPopulation, npVisitNumYear, npVisitNumYearOECD
     valueSet = [input1,input2,input3,input4]
     for i in range(21):
         npBasicPopulation[i] = np.array([input1,input2,input3,input4])

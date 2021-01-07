@@ -12,8 +12,7 @@ def get_header(app):
             html.Div(
                 [
                     html.A([
-                        html.Img(
-                            src="https://github.com/unsik-kim/IITPMainProject/blob/master/%EB%A1%9C%EA%B3%A0%20%ED%9A%8C%EC%8B%9D%20%EB%B0%94%ED%83%95.png?raw=true",
+                        html.Img(src=app.get_asset_url("로고 검정 바탕.png"),
                             style={"width": "110px", "height": "70px","margin-top": "10px", "margin-left": "10px", "margin-right": "10px", "margin-bottom": "10px"}
                         )
                     ],href="/idd-doctor-report/main"),
